@@ -6,6 +6,6 @@ C:\Users\floma\source\repos\MusGame\Project-MusGame\Hand.h(93): warning C4715: '
 C:\Users\floma\source\repos\MusGame\Project-MusGame\Hand.h(102): warning C4715: 'Hand::operator<' : les chemins de contrôle ne retournent pas tous une valeur
 C:\Users\floma\source\repos\MusGame\Project-MusGame\Team.h(69): warning C4715: 'Team::getPlayer' : les chemins de contrôle ne retournent pas tous une valeur
 C:\Users\floma\source\repos\MusGame\Project-MusGame\Game.h(154): warning C4715: 'Game::getTeam' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\floma\source\repos\MusGame\Project-MusGame\Game.h(388): warning C4715: 'Game::compareHand' : les chemins de contrôle ne retournent pas tous une valeur
 C:\Users\floma\source\repos\MusGame\Project-MusGame\Game.h(169): warning C4715: 'Game::getScoreTeam' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Game.h(388): warning C4715: 'Game::compareHand' : les chemins de contrôle ne retournent pas tous une valeur
   C++ Project - Mus Game.vcxproj -> C:\Users\floma\source\repos\MusGame\Project-MusGame\Debug\C++ Project - Mus Game.exe
