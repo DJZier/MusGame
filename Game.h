@@ -23,6 +23,7 @@ public:
 	int betTime();
 	Team compareHand(string lap);
 	void showAllHands() const;
+	int betPair();
 private:
 	vector<Player> listPlayer;
 	vector<Team> team;
@@ -391,5 +392,33 @@ void Game::showAllHands() const {
 		cout << player.getName() << " :" << endl;
 		player.getHand().showAllCards();
 	}
+}
+//---------------------------------------------------------------------------------------------------------------
+int Game::betPair() {
+	for (Player& player : listPlayer) {
+		if (player.haspair()) {
+			cout << player.getName() << " has a pair" << endl;
+		}
+		else {
+			cout << player.getName() << " doesn't have a pair" << endl;
+		}
+	}
+
+	if (team[0].hasPair() || team[1].hasPair()) {
+		if (!(team[0].hasPair() && team[1].hasPair())) {
+			if (team[0].hasPair()) {
+				cout << "only Team 1 has pair" << endl;
+				return -1;
+			}
+			if (team[1].hasPair()) {
+				cout << "only Team 2 has pair" << endl;
+				return -1;
+			}				
+		}
+		cout << "both teams have pairs let's bet.." << endl;
+		return 0;
+	}
+	cout << "nobody has pair let's play Game Lap" << endl;
+	return 0;
 }
 #endif

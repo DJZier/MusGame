@@ -16,6 +16,7 @@ public:
     bool operator<(const Hand& right) const;
     Card* getCard(int numCard) const { return cards[numCard]; };
     void sortHand(string order);
+    bool hasPair();
 private:
     vector<Card*> cards;
 };
@@ -98,5 +99,17 @@ bool Hand::operator<(const Hand& right) const {
         if (cards[i]->getRank() > right.getCard(i)->getRank())
             return false;
     }
+}
+//-----------------------------------------------------------
+bool Hand::hasPair() {
+    for (size_t i = 0; i < cards.size(); ++i) {
+        for (size_t j = 0; j < cards.size(); j++) {
+            if (i != j) {
+                if (cards[i]->getRank() == cards[j]->getRank())
+                    return true;
+            }
+        }
+    }
+    return false;
 }
 #endif

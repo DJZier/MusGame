@@ -1,11 +1,11 @@
 ﻿  Main.cpp
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Deck.h(43,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Hand.h(86,23): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Hand.h(95,23): warning C4018: '<' : incompatibilité signed/unsigned
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Hand.h(92): warning C4715: 'Hand::operator>=' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Hand.h(101): warning C4715: 'Hand::operator<' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Team.h(68): warning C4715: 'Team::getPlayer' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Game.h(153): warning C4715: 'Game::getTeam' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Game.h(168): warning C4715: 'Game::getScoreTeam' : les chemins de contrôle ne retournent pas tous une valeur
-C:\Users\floma\source\repos\C++ Project - Mus Game\C++ Project - Mus Game\Game.h(387): warning C4715: 'Game::compareHand' : les chemins de contrôle ne retournent pas tous une valeur
-  C++ Project - Mus Game.vcxproj -> C:\Users\floma\source\repos\C++ Project - Mus Game\Debug\C++ Project - Mus Game.exe
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Deck.h(43,15): warning C4244: 'argument' : conversion de 'time_t' en 'unsigned int', perte possible de données
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Hand.h(87,23): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Hand.h(96,23): warning C4018: '<' : incompatibilité signed/unsigned
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Hand.h(93): warning C4715: 'Hand::operator>=' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Hand.h(102): warning C4715: 'Hand::operator<' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Team.h(69): warning C4715: 'Team::getPlayer' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Game.h(154): warning C4715: 'Game::getTeam' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Game.h(388): warning C4715: 'Game::compareHand' : les chemins de contrôle ne retournent pas tous une valeur
+C:\Users\floma\source\repos\MusGame\Project-MusGame\Game.h(169): warning C4715: 'Game::getScoreTeam' : les chemins de contrôle ne retournent pas tous une valeur
+  C++ Project - Mus Game.vcxproj -> C:\Users\floma\source\repos\MusGame\Project-MusGame\Debug\C++ Project - Mus Game.exe

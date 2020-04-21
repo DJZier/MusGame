@@ -18,7 +18,7 @@ public:
 	bool isDealer() const { return dealer; };
 	void clearHand();
 	bool operator==(const Player& right) const;
-	//bool hasBet() const;
+	bool haspair();
 	
 private:
 	string name;
@@ -50,4 +50,7 @@ bool Player::operator==(const Player& right) const {
 		return false;
 }
 //--------------------------------------------------------------------------------------------------
+bool Player::haspair() {
+	return hand.hasPair();
+}
 #endif

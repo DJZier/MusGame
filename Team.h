@@ -20,6 +20,7 @@ public:
 	void setActualBet(int betValue);
 	void setDealer(int numPlayer, bool value);
 	bool operator==(const Team& right) const;
+	bool hasPair();
 
 
 private:
@@ -60,7 +61,7 @@ Player Team::getPlayer(int numPlayer) const {
 		else if (numPlayer == 2)
 			return P2;
 		else
-			throw string("ERROR: NUMBER OF PLAYER INVALID, PLEASE ENTER 1 OR 2");
+			throw string("ERROR: NUMBER OF PLAYER INVALID, PLEASE ENTER 1 OR 2"); 
 	}
 	catch (string const& error) {
 		cerr << error << endl;
@@ -109,5 +110,11 @@ bool Team::operator==(const Team& right) const {
 		return true;
 	else
 		return false;
+}
+//----------------------------------------------------------------------------------------------
+bool Team::hasPair() {
+	if (P1.haspair() || P2.haspair())
+		return true;
+	return false;
 }
 #endif
