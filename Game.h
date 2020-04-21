@@ -2,6 +2,7 @@
 #define GAME_H
 #include <iostream>
 #include "Team.h"
+#include <algorithm>
 using namespace std;
 //-----------------------------------
 enum Choice {
@@ -268,49 +269,49 @@ int Game::betTime() {
 						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
-						team[1].setBetBool(true);
-						team[0].setBetBool(false);
+team[1].setBetBool(true);
+team[0].setBetBool(false);
 					}
-				
+
 				}
 				else if (!team[0].hasBet()) {
-					cout << "nobody has bet yet" << endl;
-					cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/pass)" << endl;
-					string answer;
-					cin >> uppercase >> answer;
-					if (answer == "pass") {
-						indiceActualPlayer++;
-						nbpass++;
-						if (nbpass == 4) {
-							nbpass = 0;
-							endBet = true;
-						}
+				cout << "nobody has bet yet" << endl;
+				cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/pass)" << endl;
+				string answer;
+				cin >> uppercase >> answer;
+				if (answer == "pass") {
+					indiceActualPlayer++;
+					nbpass++;
+					if (nbpass == 4) {
+						nbpass = 0;
+						endBet = true;
 					}
-					if (answer == "raise") {
-						cout << "How much do you want to bet ?" << endl;
-						int betRaise;
-						cin >> betRaise;
-						pot += betRaise;
-						team[1].setActualBet(betRaise);
-						cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-						cout << "The pot is now : " << pot << endl;
-						indiceActualPlayer++;
-						team[1].setBetBool(true);
-						team[0].setBetBool(false);
-					}
+				}
+				if (answer == "raise") {
+					cout << "How much do you want to bet ?" << endl;
+					int betRaise;
+					cin >> betRaise;
+					pot += betRaise;
+					team[1].setActualBet(betRaise);
+					cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+					cout << "The pot is now : " << pot << endl;
+					indiceActualPlayer++;
+					team[1].setBetBool(true);
+					team[0].setBetBool(false);
+				}
 				}
 		}
 	}
 	cout << "end bet time" << endl;
 	return pot;
-		
+
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
 Team Game::compareHand(string lap) {
 	vector<Player> ranking = listPlayer;
 	for (int i = 0; i < 4; i++) {
 		for (int j = 0; j < 3; j++) {
-			if (ranking[j+1].getHand() >= ranking[j].getHand()) {
+			if (ranking[j + 1].getHand() >= ranking[j].getHand()) {
 				Player temp = ranking[j + 1];
 				ranking[j + 1] = ranking[j];
 				ranking[j] = temp;
@@ -320,7 +321,7 @@ Team Game::compareHand(string lap) {
 
 
 	if (lap == "high") {
-		
+
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (ranking[j + 1].getHand() >= ranking[j].getHand()) {
@@ -344,7 +345,7 @@ Team Game::compareHand(string lap) {
 			P.getHand().sortHand("low");
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 3; j++) {
-				if (ranking[j+1].getHand() < ranking[j].getHand()) {
+				if (ranking[j + 1].getHand() < ranking[j].getHand()) {
 					Player temp = ranking[j + 1];
 					ranking[j + 1] = ranking[j];
 					ranking[j] = temp;
@@ -359,6 +360,70 @@ Team Game::compareHand(string lap) {
 		else {
 			return team[1];
 		}
+	}
+	else if (lap == "pair") {
+		vector<Player> listPair;
+		vector<int> pairValue;
+		for (Player& player : ranking) {
+			if (player.haspair())
+				listPair.push_back(player);
+		}
+		for (Player& player : listPair) {
+			int pairVal = 0;
+			for (int i = 0; i < 4 ; i++){
+				for (int j = 0; j < 4; j++) {
+					if (j == i)
+						NULL;
+					else {
+						if (player.getHand().getCard(i)->getRank() == player.getHand().getCard(j)->getRank()) {
+							pairVal++;
+						}
+					}
+				}
+			}
+			pairValue.push_back(pairVal);
+		}
+		int max = 0;
+		int nbmax = 0;
+		int it = 0;
+		int count=0;
+		for (int& val : pairValue) {
+			if (val > max) {
+				max = val;
+				nbmax = 1;
+				it = count;
+			}
+			else if (val = max) {
+				nbmax++;
+			}
+			count++;
+		}
+
+		if (nbmax == 1) {
+			if (listPair[it].operator==(team[0].getPlayer(1)) || listPair[it].operator==(team[0].getPlayer(2)))
+				return team[0];
+			else {
+				return team[1];
+			}
+		}
+		else {
+			// si pairValue[it] = 2, 4 ou 6, arriver a sortir les paires de chacun et les comparer
+			// idée 1 : recréer un vecteur avec seulement les joueurs avec les mains à comparer ( ou supprimer ceux éliminés dans listPair)
+			//			si paire simple -> trouver paire avec 2 boucles for, stocker valeur dans un vecteur
+			//			trouver val max dans le vecteur (réutiliser pairValue), sortir l'indice et le mettre dans it
+			//			si med -> de meme
+			//			si double pair, faire pareil mais sortir 2 valeurs, comparer la plus grande de chaque, sinon la deuxieme
+			// attention, penser à gérer les égalités !!!
+		}
+			
+
+		
+		if (listPair[it].operator==(team[0].getPlayer(1)) || listPair[it].operator==(team[0].getPlayer(2)))
+			return team[0];
+		else {
+			return team[1];
+		}
+
 	}
 		
 }
@@ -416,7 +481,7 @@ int Game::betPair() {
 		}
 		while (endBet == false) {
 			while (listPlayer[indiceActualPlayer].haspair() == false) {
-				if (it < 3) {
+				if (it < 4) {
 					indiceActualPlayer = it++;
 				}
 
@@ -528,7 +593,7 @@ int Game::betPair() {
 						if (answer == "pass") {
 							indiceActualPlayer++;
 							nbpass++;
-							if (nbpass == nbpair) {
+							if (nbpass == nbpair ) {
 								nbpass = 0;
 								endBet = true;
 							}

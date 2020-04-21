@@ -27,7 +27,8 @@ int main() {
       /*  int highPot;
         cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
         highPot = game.betTime();
-        if (game.compareHand("high") == game.getTeam(1)) {
+        if (game.compareHand("high") =
+        = game.getTeam(1)) {
             cout << "Team 1 won the High lap" << endl;
         }
         else if (game.compareHand("high") == game.getTeam(2)) {
@@ -43,8 +44,15 @@ int main() {
             cout << "Team 2 won the Low lap" << endl;
         }
         cout << "lowPot =" << lowPot << endl;*/
-        cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;
-        game.betPair();
+        cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;        
+        int pairPot = game.betPair();
+        if (game.compareHand("pair") == game.getTeam(1)) {
+            cout << "Team 1 won the Pair lap" << endl;
+        }
+        else if (game.compareHand("pair") == game.getTeam(2)) {
+            cout << "Team 2 won the Pair lap" << endl;
+        }
+        cout << "PairPot =" << pairPot << endl;
         game.shutDown();
 
         cout << "do you want to quit the game ? (y/n)" << endl;
