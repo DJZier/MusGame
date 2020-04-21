@@ -24,7 +24,7 @@ int main() {
     game.showScore();*/
 
     while ((game.getScoreTeam(1) < 40) && (game.getScoreTeam(2) < 40)) {
-        /*int highPot;
+        int highPot;
         cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
         highPot = game.betTime();
         if (game.compareHand("high") == game.getTeam(1)) {
@@ -42,7 +42,7 @@ int main() {
         else if (game.compareHand("low") == game.getTeam(2)) {
             cout << "Team 2 won the Low lap" << endl;
         }
-        cout << "lowPot =" << lowPot << endl;*/
+        cout << "lowPot =" << lowPot << endl;
         cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;
         game.betPair();
         game.shutDown();
