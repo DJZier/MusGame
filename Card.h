@@ -35,12 +35,6 @@ void Card::swap(Card* ct) {
 }
 //-----------------------------
 Rank Card::getRank() const {
-    /*switch (rank) {
-    case TEN: return 10; break;
-    case ELEVEN: return 11; break;
-    case TWELVE: return 12; break;
-    default: return (int)rank ; break;
-    }*/
     return rank;
 }
 //---------------------------------------

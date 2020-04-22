@@ -2,7 +2,6 @@
 #define GAME_H
 #include <iostream>
 #include "Team.h"
-#include <algorithm>
 using namespace std;
 //-----------------------------------
 enum Choice {
@@ -269,8 +268,8 @@ int Game::betTime() {
 						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
-team[1].setBetBool(true);
-team[0].setBetBool(false);
+						team[1].setBetBool(true);
+						team[0].setBetBool(false);
 					}
 
 				}
@@ -446,8 +445,8 @@ Team Game::compareHand(string lap) {
 			else {
 				int maxrank2 = 1;
 				for (Player& player : bestPair) {					// if best kind of pair is double pair, for all players...
-					Rank pair1;
-					Rank pair2;
+					Rank pair1= ACE;
+					Rank pair2=ACE;
 					if (player.getHand().getCard(0)->getRank() == player.getHand().getCard(1)->getRank()) {		// ... if two first cards are equals, so value of the first pair is the value of the first cards and value of the second pair is value of the 3rd card
 						if (player.getHand().getCard(0)->getRank() > player.getHand().getCard(1)->getRank()) {	// if two first cards are different,so value of the first pair is the value of the first card and value of the second pair is value of the second card
 							pair1 = player.getHand().getCard(0)->getRank();										// we put the best best in pair one to compare the pairs of the players easily
@@ -480,19 +479,19 @@ Team Game::compareHand(string lap) {
 		}	
 	}		
 }
-//---------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void Game::showAllHands() const {
 	for (const Player& player : listPlayer) {
 		cout << player.getName() << " :" << endl;
 		player.getHand().showAllCards();
 	}
 }
-//---------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int Game::betPair() {
 	int nbpair = 0;
 	for (Player& player : listPlayer) {
 		if (player.haspair()) {
-			cout << player.getName() << " has a pair" << endl;
+			cout << player.getName() << " has a pair" << endl;					//a first lap to know who has pair
 			nbpair++;
 		}
 		else {
@@ -500,8 +499,8 @@ int Game::betPair() {
 		}
 	}
 
-	if (team[0].hasPair() || team[1].hasPair()) {
-		if (!(team[0].hasPair() && team[1].hasPair())) {
+	if (team[0].hasPair() || team[1].hasPair()) {						// if one team or both have....
+		if (!(team[0].hasPair() && team[1].hasPair())) {				// if only one team has pair it return -1
 			if (team[0].hasPair()) {
 				cout << "only Team 1 has pair" << endl;
 				return -1;
@@ -511,33 +510,39 @@ int Game::betPair() {
 				return -1;
 			}				
 		}
-		cout << "both teams have pairs let's bet.." << endl;
+		cout << "both teams have pairs let's bet.." << endl;		// if both of them have pair....
 		cout << "loading bet time" << endl;
 		int pot = 0;
 		int it = 0;
 		int indiceActualPlayer = -1;
 		bool endBet = false;
 		int nbpass = 0;
-		for (Player& player : listPlayer) {
+		for (Player& player : listPlayer) {			// we initialize the actual player
 			it++;
 			if (player.isDealer()) {
 				if (it < 4) {
 					indiceActualPlayer = it;
 				}
-
 				else {
 					indiceActualPlayer = 0;
 					it = 0;
 				}
-			}
-				
+			}				
 		}
-		while (endBet == false) {
-			while (listPlayer[indiceActualPlayer].haspair() == false) {
+		while (endBet == false) {			//we begin a loop for betting time
+
+			if (it < 4) {					// careful not to be out of range 
+				indiceActualPlayer = it;
+			}
+			else {
+				indiceActualPlayer = 0;
+				it = 0;
+			}
+
+			while (listPlayer[indiceActualPlayer].haspair() == false) {		//if actual player doesn't have pair, go to the next player
 				if (it < 4) {
 					indiceActualPlayer = it++;
 				}
-
 				else {
 					indiceActualPlayer = 0;
 					it = 0;
@@ -550,21 +555,21 @@ int Game::betPair() {
 						cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/see/fold)" << endl;
 						string answer;
 						cin >> uppercase >> answer;
-						if (answer == "see") {
+						if (answer == "see") {	//<-------------------------------------------------------------------------------------- if player want to see, we end the loop and we return the pot
 							endBet = true;
 							cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
 							cout << "end bet time" << endl;
 							team[0].setBetBool(false);
 							return pot;
 						}
-						if (answer == "fold") {
+						if (answer == "fold") {//<-------------------------------------------------------------------------------------- if player want to fold, we end the loop and we return the pot
 							endBet = true;
 							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 							cout << "end bet time" << endl;
 							team[0].setBetBool(false);
-							return pot;
+							return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
 						}
-						if (answer == "raise") {
+						if (answer == "raise") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
 							cout << "How much do you want to raise ?" << endl;
 							int betRaise;
 							cin >> betRaise;
@@ -573,17 +578,17 @@ int Game::betPair() {
 							cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
 							cout << "The pot is now : " << pot << endl;
 							indiceActualPlayer++;
-							team[0].setBetBool(true);
+							team[0].setBetBool(true); 
 							team[1].setBetBool(false);
 						}
 
 					}
-					else if (!team[1].hasBet()) {
+					else if (!team[1].hasBet()) {					//if the opponsing team has not bet yet, we have two choices raise or pass
 						cout << "nobody has bet yet" << endl;
 						cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/pass)" << endl;
 						string answer;
 						cin >> uppercase >> answer;
-						if (answer == "pass") {
+						if (answer == "pass") {					//if the player want to pass, we just go to the next player and we increase a counter to know how many players have already pass
 							indiceActualPlayer++;
 							nbpass++;
 							if (nbpass == nbpair) {
@@ -591,7 +596,7 @@ int Game::betPair() {
 								endBet = true;
 							}
 						}
-						if (answer == "raise") {
+						if (answer == "raise") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
 							cout << "How much do you want to bet ?" << endl;
 							int betRaise;
 							cin >> betRaise;
@@ -605,8 +610,8 @@ int Game::betPair() {
 						}
 					}
 				}
-				else if ((listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(2)))) { //verify if actual player is in team1
-					if (team[0].hasBet()) {																				  //if yes, if opposing team has already bet, make a choice : raise see or fold
+				else if ((listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(2)))) { // we do the same thing for team2
+					if (team[0].hasBet()) {
 						cout << "opposing team has bet : " << team[0].getActualBet() << endl;
 						cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/see/fold)" << endl;
 						string answer;
