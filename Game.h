@@ -162,6 +162,10 @@ int Game::betTime() {
 	int indiceActualPlayer=-1;
 	bool endBet = false;
 	int nbpass = 0;
+	team[0].setBetBool(false);
+	team[1].setBetBool(false);
+	team[0].setActualBet(0);
+	team[1].setActualBet(0);
 	for (Player& player : listPlayer) {
 		it++;
 		if (player.isDealer()) 
@@ -265,6 +269,7 @@ int Game::betTime() {
 						int betRaise;
 						cin >> betRaise;
 						pot += betRaise;
+						team[1].setActualBet(betRaise);
 						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
@@ -489,6 +494,8 @@ void Game::showAllHands() const {
 //-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int Game::betPair() {
 	int nbpair = 0;
+	team[0].setBetBool(false);
+	team[1].setBetBool(false);
 	for (Player& player : listPlayer) {
 		if (player.haspair()) {
 			cout << player.getName() << " has a pair" << endl;					//a first lap to know who has pair
@@ -635,6 +642,7 @@ int Game::betPair() {
 							int betRaise;
 							cin >> betRaise;
 							pot += betRaise;
+							team[1].setActualBet(betRaise);
 							cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
 							cout << "The pot is now : " << pot << endl;
 							indiceActualPlayer++;
