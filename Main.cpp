@@ -12,7 +12,7 @@ int main() {
     game.dealCards(deck);
 
     while ((game.getScoreTeam(1) < 40) && (game.getScoreTeam(2) < 40)) {
-      int highPot;
+      /*int highPot;
         cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
         highPot = game.betTime();
         if (game.compareHand("high") == game.getTeam(1)) {
@@ -39,7 +39,9 @@ int main() {
         else if (game.compareHand("pair") == game.getTeam(2)) {
             cout << "Team 2 won the Pair lap" << endl;
         }
-        cout << "PairPot =" << pairPot << endl;
+        cout << "PairPot =" << pairPot << endl;*/
+        cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
+        game.betGame();
         game.shutDown();
 
         cout << "do you want to quit the game ? (y/n)" << endl;

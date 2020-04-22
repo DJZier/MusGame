@@ -17,6 +17,9 @@ public:
     Card* getCard(int numCard) const { return cards[numCard]; };
     void sortHand(string order);
     bool hasPair();
+    int sumHand();
+
+
 private:
     vector<Card*> cards;
 };
@@ -112,4 +115,13 @@ bool Hand::hasPair() {
     }
     return false;
 }
+//------------------------------------------------------------
+int Hand::sumHand() {
+    int sum = 0;
+    for (Card*& card : cards) 
+        sum += card->getVal();
+    return sum;
+}
+//------------------------------------------------------------
+
 #endif

@@ -19,7 +19,9 @@ public:
 	void clearHand();
 	bool operator==(const Player& right) const;
 	bool haspair();
-	
+	bool hasGame();
+
+
 private:
 	string name;
 	bool dealer = false;
@@ -52,5 +54,11 @@ bool Player::operator==(const Player& right) const {
 //--------------------------------------------------------------------------------------------------
 bool Player::haspair() {
 	return hand.hasPair();
+}
+//---------------------------------------------------------------------------------------------------
+bool Player::hasGame() {
+	if (hand.sumHand() > 30)
+		return true;
+	return false;
 }
 #endif

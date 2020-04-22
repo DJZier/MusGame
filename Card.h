@@ -12,6 +12,7 @@ class Card {
 public:
     Card(Rank r) : rank(r) {};
     Rank getRank() const ;
+    int getVal() const;
     void show() const; //display cards onto the screen
     void swap(Card* ct); //swap two cards
     bool operator==(const Card& right) const;
@@ -43,5 +44,43 @@ bool Card::operator==(const Card& right) const {
         return true;
     else
         return false;
+}
+//----------------------------------------
+int Card::getVal() const {
+    switch (rank)
+    {
+    case ACE:
+        return 1;
+        break;
+    case TWO:
+        return 2;
+        break;
+    case THREE:
+        return 3;
+        break;
+    case FOUR:
+        return 4;
+        break;
+    case FIVE:
+        return 5;
+        break;
+    case SIX:
+        return 6;
+        break;
+    case SEVEN:
+        return 7;
+        break;
+    case TEN:
+        return 10;
+        break;
+    case ELEVEN:
+        return 10;
+        break;
+    case TWELVE:
+        return 10;
+        break;
+    default:
+        break;
+    }
 }
 #endif

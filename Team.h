@@ -21,6 +21,7 @@ public:
 	void setDealer(int numPlayer, bool value);
 	bool operator==(const Team& right) const;
 	bool hasPair();
+	bool hasGame();
 
 
 private:
@@ -107,6 +108,12 @@ bool Team::operator==(const Team& right) const {
 //----------------------------------------------------------------------------------------------
 bool Team::hasPair() {
 	if (P1.haspair() || P2.haspair())
+		return true;
+	return false;
+}
+//----------------------------------------------------------------------------------------------
+bool Team::hasGame() {
+	if (P1.hasGame() || P2.hasGame())
 		return true;
 	return false;
 }
