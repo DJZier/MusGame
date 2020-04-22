@@ -364,12 +364,13 @@ Team Game::compareHand(string lap) {
 	else if (lap == "pair") {
 		vector<Player> listPair;
 		vector<int> pairValue;
-		for (Player& player : ranking) {
+		vector<Player> bestPair;
+		for (Player& player : ranking) {             //we put all players with pairs in a vector
 			if (player.haspair())
 				listPair.push_back(player);
 		}
-		for (Player& player : listPair) {
-			int pairVal = 0;
+		for (Player& player : listPair) {            //we create a vector of int corresponding to the value of the player's pair : 2=normal pair, 4=double pair, 6=three cards
+			int pairVal = 0;						 //the first value of this vector is the pair of the first player in listPair and so on...
 			for (int i = 0; i < 4 ; i++){
 				for (int j = 0; j < 4; j++) {
 					if (j == i)
@@ -387,8 +388,8 @@ Team Game::compareHand(string lap) {
 		int nbmax = 0;
 		int it = 0;
 		int count=0;
-		for (int& val : pairValue) {
-			if (val > max) {
+		for (int& val : pairValue) {      //we find the best kind of pair in he game and how many palyers get it. for example if 3 persons have pair, 1has a normal pair and 2 have 
+			if (val > max) {			  // three same cards max will be equal to 6 (corresponding to three same cards) ans nbmax equal to 2 (to persons have three same cards)
 				max = val;
 				nbmax = 1;
 				it = count;
@@ -399,7 +400,7 @@ Team Game::compareHand(string lap) {
 			count++;
 		}
 
-		if (nbmax == 1) {
+		if (nbmax == 1) {					// if only 1 person has the best kind of pair in this hand, he will automatically win so we return his team
 			if (listPair[it].operator==(team[0].getPlayer(1)) || listPair[it].operator==(team[0].getPlayer(2)))
 				return team[0];
 			else {
@@ -412,20 +413,72 @@ Team Game::compareHand(string lap) {
 			//			si paire simple -> trouver paire avec 2 boucles for, stocker valeur dans un vecteur
 			//			trouver val max dans le vecteur (réutiliser pairValue), sortir l'indice et le mettre dans it
 			//			si med -> de meme
-			//			si double pair, faire pareil mais sortir 2 valeurs, comparer la plus grande de chaque, sinon la deuxieme
+			//			si double pair, faire pareil mais sortir 2 valeurs, comparer la plus grande de chaque, sinon la deuxieme(juste une boucle si = continuer si diff terminer sortir les 2 valeurs
 			// attention, penser à gérer les égalités !!!
-		}
-			
 
-		
-		if (listPair[it].operator==(team[0].getPlayer(1)) || listPair[it].operator==(team[0].getPlayer(2)))
-			return team[0];
-		else {
-			return team[1];
-		}
+			for (int i = 0; i < pairValue.size(); i++) {  //if several people have the best kind of pair, we create a vector with those players and we have to compare the pairs
+				if (pairValue[i] == max)
+					bestPair.push_back(listPair[i]);
+			}
+			int itmax = 0;				// we keep the index of the best player in itmax
+			int count = 0;
+			Rank maxrank = ACE;
+			if (max == 2 || max ==6) {      // if Best king of pair is normal or three same, we find each pair of the players and we compare the value to know which one is the best				
+				for (Player& player : bestPair) {
+					for (int j = 0; j < 4; j++) {
+						for (int k = 0; k < 4; k++) {
+							if (j == k)
+								NULL;
+							else {
+								if (player.getHand().getCard(j)->getRank() == player.getHand().getCard(k)->getRank()) {
+									if (player.getHand().getCard(j)->getRank() > maxrank) {
+										maxrank = player.getHand().getCard(j)->getRank();
+										itmax = count;
 
-	}
-		
+									}
+								}
+							}
+						}
+					}
+					count++;
+				}
+			}
+			else {
+				int maxrank2 = 1;
+				for (Player& player : bestPair) {					// if best kind of pair is double pair, for all players...
+					Rank pair1;
+					Rank pair2;
+					if (player.getHand().getCard(0)->getRank() == player.getHand().getCard(1)->getRank()) {		// ... if two first cards are equals, so value of the first pair is the value of the first cards and value of the second pair is value of the 3rd card
+						if (player.getHand().getCard(0)->getRank() > player.getHand().getCard(1)->getRank()) {	// if two first cards are different,so value of the first pair is the value of the first card and value of the second pair is value of the second card
+							pair1 = player.getHand().getCard(0)->getRank();										// we put the best best in pair one to compare the pairs of the players easily
+							pair2 = player.getHand().getCard(2)->getRank();
+						}
+						else {
+							pair2 = player.getHand().getCard(0)->getRank();
+							pair1 = player.getHand().getCard(1)->getRank();
+						}						
+					}
+					if (pair1 > maxrank) {				// if the value og the best pair of the player is better than the actual max, so we replace the max by this value
+						maxrank = pair1;
+						maxrank2 = pair2;
+						itmax = count;					// and we store the index's value of the player in itmax
+					}
+					else if (pair1 == maxrank) {		// if best pair of the player equal to the maxrank so we compare the second pair
+						if (pair2 > maxrank2) {
+							maxrank2 = pair2;
+							itmax = count;
+						}
+					}
+					count++;
+				}
+			}
+			if (bestPair[it].operator==(team[0].getPlayer(1)) || bestPair[it].operator==(team[0].getPlayer(2)))
+				return team[0];
+			else {
+				return team[1];
+			}
+		}	
+	}		
 }
 //---------------------------------------------------------------------------------------------------------------
 void Game::showAllHands() const {
