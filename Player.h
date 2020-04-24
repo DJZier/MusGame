@@ -57,7 +57,7 @@ bool Player::haspair() {
 }
 //---------------------------------------------------------------------------------------------------
 bool Player::hasGame() {
-	if (hand.sumHand() > 30)
+	if (hand.sumHand() > 22)
 		return true;
 	return false;
 }

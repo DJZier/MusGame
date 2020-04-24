@@ -608,7 +608,7 @@ int Game::betPair() {
 							cout << "The pot is now : " << pot << endl;
 							indiceActualPlayer++;
 							team[0].setBetBool(true); 
-							//team[1].setBetBool(false);
+							team[1].setBetBool(true);
 						}
 
 					}
@@ -635,7 +635,7 @@ int Game::betPair() {
 							cout << "The pot is now : " << pot << endl;
 							indiceActualPlayer++;
 							team[0].setBetBool(true);
-							team[1].setBetBool(false);
+							team[1].setBetBool(true);
 
 						}
 					}
@@ -670,7 +670,7 @@ int Game::betPair() {
 							cout << "The pot is now : " << pot << endl;
 							indiceActualPlayer++;
 							team[1].setBetBool(true);
-							//team[0].setBetBool(false);
+							team[0].setBetBool(true);
 						}
 
 					}
@@ -697,7 +697,7 @@ int Game::betPair() {
 							cout << "The pot is now : " << pot << endl;
 							indiceActualPlayer++;
 							team[1].setBetBool(true);
-							team[0].setBetBool(false);
+							team[0].setBetBool(true);
 						}
 					}
 				}
@@ -759,7 +759,7 @@ int Game::betGame() {
 				}
 			}
 		}
-		cout << "actual player is : " << listPlayer[it].getName() << endl;
+		cout << "actual player is : " << listPlayer[indiceActualPlayer].getName() << endl;
 		while (endBet == false) {			//we begin a loop for betting time
 
 			/*if (it < 4) {					// careful not to be out of range 
@@ -813,7 +813,7 @@ int Game::betGame() {
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
 						team[0].setBetBool(true);
-						//team[1].setBetBool(false);
+						team[1].setBetBool(true);
 					}
 
 				}
@@ -840,7 +840,7 @@ int Game::betGame() {
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
 						team[0].setBetBool(true);
-						//team[1].setBetBool(false);
+						team[1].setBetBool(true);
 					}
 				}
 			}
@@ -874,7 +874,7 @@ int Game::betGame() {
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
 						team[1].setBetBool(true);
-						//team[0].setBetBool(false);
+						team[0].setBetBool(true);
 					}
 
 				}
@@ -901,7 +901,7 @@ int Game::betGame() {
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
 						team[1].setBetBool(true);
-						//team[0].setBetBool(false);
+						team[0].setBetBool(true);
 					}
 				}
 			}

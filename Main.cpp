@@ -30,7 +30,7 @@ int main() {
         else if (game.compareHand("low") == game.getTeam(2)) {
             cout << "Team 2 won the Low lap" << endl;
         }
-        cout << "lowPot =" << lowPot << endl;*/
+        cout << "lowPot =" << lowPot << endl;
         cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;        
         int pairPot = game.betPair();
         cout << "bien retourné quelque chose" << endl;
@@ -43,7 +43,7 @@ int main() {
             }
         }
         
-        cout << "PairPot =" << pairPot << endl;
+        cout << "PairPot =" << pairPot << endl;*/
         cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
         int Gamepot = game.betGame();
         game.shutDown();
