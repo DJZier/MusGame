@@ -92,6 +92,8 @@ void Game::shutDown() {
 		cerr << error << endl;
 	}
 }
+
+
 //---------------------------------------------------------------------------------------------------------------------------------
 void Game::showScore() const {
 	cout << "Team 1's score : " << team[0].getScore() << endl;
@@ -111,6 +113,7 @@ void Game::setScore(int numTeam, int newScore)
 		cerr << error << endl;
 	}
 }
+
 //---------------------------------------------------------------------------------------------------------------------------------
 void Game::addPoints(int numTeam, int addScore) {
 	try {
@@ -172,8 +175,7 @@ int Game::betTime() {
 		if (player.isDealer()) 
 			if (it < 4) {
 				indiceActualPlayer = it;
-			}		
-
+			}
 			else {
 				indiceActualPlayer = 0;
 				it = 0;
@@ -191,32 +193,42 @@ int Game::betTime() {
 				string answer;				
 				cin >> uppercase >> answer;
 				transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-				if (answer == "SEE") {
-					endBet = true;
-					cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
-					cout << "end bet time" << endl;
-					team[0].setBetBool(false);
-					return pot;
+				try {
+					if (answer == "SEE") {
+						endBet = true;
+						cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
+						cout << "end bet time" << endl;
+						team[0].setBetBool(false);
+						return pot;
+					}
+					else if (answer == "FOLD") {
+						endBet = true;
+						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
+						cout << "end bet time" << endl;
+						team[0].setBetBool(false);
+						return pot;
+					}
+					else if (answer == "RAISE") {
+						cout << "How much do you want to raise ?" << endl;
+						int betRaise;
+						cin >> betRaise;
+						pot += betRaise;
+						team[0].setActualBet(betRaise);
+						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
+						cout << "The pot is now : " << pot << endl;
+						indiceActualPlayer++;
+						team[0].setBetBool(true);
+						team[1].setBetBool(false);
+					}
+					else {
+						throw string("ERROR: PLEASE ENTER \"See\", \"Raise\" OR \"fold\"");
+					}
 				}
-				if (answer == "FOLD") {
-					endBet = true;
-					cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
-					cout << "end bet time" << endl;
-					team[0].setBetBool(false);
-					return pot;
+				catch (string const& error)
+				{
+					cerr << error << endl;
 				}
-				if (answer == "RAISE") {
-					cout << "How much do you want to raise ?" << endl;
-					int betRaise;
-					cin >> betRaise;
-					pot += betRaise;
-					team[0].setActualBet(betRaise);
-					cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
-					cout << "The pot is now : " << pot << endl;
-					indiceActualPlayer++;
-					team[0].setBetBool(true);
-					team[1].setBetBool(false);
-				}
+				
 				
 			}
 			else if (!team[1].hasBet()) {
@@ -225,26 +237,34 @@ int Game::betTime() {
 				string answer;
 				cin >> uppercase >> answer;
 				transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-				if (answer == "PASS") {
-					indiceActualPlayer++;
-					nbpass++;
-					if (nbpass == 4) {
-						nbpass = 0;
-						endBet = true;
+				try {
+					if (answer == "PASS") {
+						indiceActualPlayer++;
+						nbpass++;
+						if (nbpass == 4) {
+							nbpass = 0;
+							endBet = true;
+						}
 					}
+					else if (answer == "RAISE") {
+						cout << "How much do you want to bet ?" << endl;
+						int betRaise;
+						cin >> betRaise;
+						pot += betRaise;
+						team[0].setActualBet(betRaise);
+						cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+						cout << "The pot is now : " << pot << endl;
+						indiceActualPlayer++;
+						team[0].setBetBool(true);
+						team[1].setBetBool(false);
+					}
+					else
+						throw string("ERROR: PLEASE ENTER \"Raise\" OR \"Pass\"");
 				}
-				if (answer == "RAISE") {
-					cout << "How much do you want to bet ?" << endl;
-					int betRaise;
-					cin >> betRaise;
-					pot += betRaise;
-					team[0].setActualBet(betRaise);
-					cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-					cout << "The pot is now : " << pot << endl;
-					indiceActualPlayer++;
-					team[0].setBetBool(true);
-					team[1].setBetBool(false);
+				catch (string const& error) {
+					cerr << error << endl;
 				}
+				
 			}
 		}
 		else if ((listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(2)))) { //verify if actual player is in team1
@@ -254,60 +274,78 @@ int Game::betTime() {
 					string answer;
 					cin >> uppercase >> answer;
 					transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-					if (answer == "SEE") {
-						endBet = true;
-						cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
-						cout << "end bet time" << endl;
-						team[1].setBetBool(false);
-						return pot;
+					try {
+						if (answer == "SEE") {
+							endBet = true;
+							cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
+							cout << "end bet time" << endl;
+							team[1].setBetBool(false);
+							return pot;
+						}
+						else if (answer == "FOLD") {
+							endBet = true;
+							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
+							cout << "end bet time" << endl;
+							team[1].setBetBool(false);
+							return pot;
+						}
+						else if (answer == "RAISE") {
+							cout << "How much do you want to raise ?" << endl;
+							int betRaise;
+							cin >> betRaise;
+							pot += betRaise;
+							team[1].setActualBet(betRaise);
+							cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
+							cout << "The pot is now : " << pot << endl;
+							indiceActualPlayer++;
+							team[1].setBetBool(true);
+							team[0].setBetBool(false);
+						}
+						else
+							throw string("ERROR: PLEASE ENTER \"See\", \"Raise\" OR \"fold\"");
 					}
-					if (answer == "FOLD") {
-						endBet = true;
-						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
-						cout << "end bet time" << endl;
-						team[1].setBetBool(false);
-						return pot;
+					catch (string const& error) {
+						cerr << error << endl;
 					}
-					if (answer == "RAISE") {
-						cout << "How much do you want to raise ?" << endl;
-						int betRaise;
-						cin >> betRaise;
-						pot += betRaise;
-						team[1].setActualBet(betRaise);
-						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
-						cout << "The pot is now : " << pot << endl;
-						indiceActualPlayer++;
-						team[1].setBetBool(true);
-						team[0].setBetBool(false);
-					}
+					
+					
 
 				}
 				else if (!team[0].hasBet()) {
-				cout << "nobody has bet yet" << endl;
-				cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/pass)" << endl;
-				string answer;
-				cin >> uppercase >> answer;
-				transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-				if (answer == "PASS") {
-					indiceActualPlayer++;
-					nbpass++;
-					if (nbpass == 4) {
-						nbpass = 0;
-						endBet = true;
+					cout << "nobody has bet yet" << endl;
+					cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/pass)" << endl;
+					string answer;
+					cin >> uppercase >> answer;
+					transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
+					try {
+						if (answer == "PASS") {
+							indiceActualPlayer++;
+							nbpass++;
+							if (nbpass == 4) {
+								nbpass = 0;
+								endBet = true;
+							}
+						}
+						else if (answer == "RAISE") {
+							cout << "How much do you want to bet ?" << endl;
+							int betRaise;
+							cin >> betRaise;
+							pot += betRaise;
+							team[1].setActualBet(betRaise);
+							cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+							cout << "The pot is now : " << pot << endl;
+							indiceActualPlayer++;
+							team[1].setBetBool(true);
+							team[0].setBetBool(false);
+						}
+						else
+						throw string("ERROR: PLEASE ENTER \"Raise\" OR \"Pass\"");
 					}
-				}
-				if (answer == "RAISE") {
-					cout << "How much do you want to bet ?" << endl;
-					int betRaise;
-					cin >> betRaise;
-					pot += betRaise;
-					team[1].setActualBet(betRaise);
-					cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-					cout << "The pot is now : " << pot << endl;
-					indiceActualPlayer++;
-					team[1].setBetBool(true);
-					team[0].setBetBool(false);
-				}
+					catch (string const& error) {
+						cerr << error << endl;
+					}
+				
+				
 				}
 		}
 	}
@@ -552,14 +590,6 @@ int Game::betPair() {
 		cout << it << endl;
 		cout << "actual player is : " << listPlayer[indiceActualPlayer].getName() << endl;
 		while (endBet == false) {			//we begin a loop for betting time
-
-			/*if (it < 4) {					// careful not to be out of range 
-				indiceActualPlayer = it;
-			}
-			else {
-				indiceActualPlayer = 0;
-				it = 0;
-			}*/
 			if (indiceActualPlayer == 4) {
 				indiceActualPlayer = 0;
 				cout << "changment indice actual player" << endl;
@@ -589,32 +619,40 @@ int Game::betPair() {
 						string answer;
 						cin >> uppercase >> answer;
 						transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-						if (answer == "SEE") {	//<-------------------------------------------------------------------------------------- if player want to see, we end the loop and we return the pot
-							endBet = true;
-							cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
-							cout << "end bet time" << endl;
-							team[0].setBetBool(false);
-							return pot;
+						try {
+							if (answer == "SEE") {	//<-------------------------------------------------------------------------------------- if player want to see, we end the loop and we return the pot
+								endBet = true;
+								cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
+								cout << "end bet time" << endl;
+								team[0].setBetBool(false);
+								return pot;
+							}
+							else if (answer == "FOLD") {//<-------------------------------------------------------------------------------------- if player want to fold, we end the loop and we return the pot
+								endBet = true;
+								cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
+								cout << "end bet time" << endl;
+								team[0].setBetBool(false);
+								return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+							}
+							else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
+								cout << "How much do you want to raise ?" << endl;
+								int betRaise;
+								cin >> betRaise;
+								pot += betRaise;
+								team[0].setActualBet(betRaise);
+								cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
+								cout << "The pot is now : " << pot << endl;
+								indiceActualPlayer++;
+								team[0].setBetBool(true);
+								team[1].setBetBool(true);
+							}
+							else
+								throw string("ERROR: PLEASE ENTER \"See\", \"Raise\" OR \"fold\"");
 						}
-						if (answer == "FOLD") {//<-------------------------------------------------------------------------------------- if player want to fold, we end the loop and we return the pot
-							endBet = true;
-							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
-							cout << "end bet time" << endl;
-							team[0].setBetBool(false);
-							return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+						catch (string const& error) {
+							cerr << error << endl;
 						}
-						if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
-							cout << "How much do you want to raise ?" << endl;
-							int betRaise;
-							cin >> betRaise;
-							pot += betRaise;
-							team[0].setActualBet(betRaise);
-							cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
-							cout << "The pot is now : " << pot << endl;
-							indiceActualPlayer++;
-							team[0].setBetBool(true); 
-							team[1].setBetBool(true);
-						}
+									
 
 					}
 					else if (!team[1].hasBet()) {					//if the opponsing team has not bet yet, we have two choices raise or pass
@@ -623,27 +661,36 @@ int Game::betPair() {
 						string answer;
 						cin >> uppercase >> answer;
 						transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-						if (answer == "PASS") {					//if the player want to pass, we just go to the next player and we increase a counter to know how many players have already pass
-							indiceActualPlayer++;
-							nbpass++;
-							if (nbpass == nbpair) {
-								nbpass = 0;
-								endBet = true;
+						try {
+							if (answer == "PASS") {					//if the player want to pass, we just go to the next player and we increase a counter to know how many players have already pass
+								indiceActualPlayer++;
+								nbpass++;
+								if (nbpass == nbpair) {
+									nbpass = 0;
+									endBet = true;
+								}
 							}
-						}
-						if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
-							cout << "How much do you want to bet ?" << endl;
-							int betRaise;
-							cin >> betRaise;
-							pot += betRaise;
-							team[0].setActualBet(betRaise);
-							cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-							cout << "The pot is now : " << pot << endl;
-							indiceActualPlayer++;
-							team[0].setBetBool(true);
-							team[1].setBetBool(true);
+							else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
+								cout << "How much do you want to bet ?" << endl;
+								int betRaise;
+								cin >> betRaise;
+								pot += betRaise;
+								team[0].setActualBet(betRaise);
+								cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+								cout << "The pot is now : " << pot << endl;
+								indiceActualPlayer++;
+								team[0].setBetBool(true);
+								team[1].setBetBool(true);
 
+							}
+							else
+								throw string("ERROR: PLEASE ENTER \"Raise\" OR \"Pass\"");
 						}
+						catch (string const& error) {
+							cerr << error << endl;
+						}
+						
+						
 					}
 				}
 				else if ((listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(2)))) { // we do the same thing for team2
@@ -653,32 +700,41 @@ int Game::betPair() {
 						string answer;
 						cin >> uppercase >> answer;
 						transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-						if (answer == "SEE") {
-							endBet = true;
-							cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
-							cout << "end bet time" << endl;
-							team[1].setBetBool(false);
-							return pot;
+						try {
+							if (answer == "SEE") {
+								endBet = true;
+								cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
+								cout << "end bet time" << endl;
+								team[1].setBetBool(false);
+								return pot;
+							}
+							else if (answer == "FOLD") {
+								endBet = true;
+								cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
+								cout << "end bet time" << endl;
+								team[1].setBetBool(false);
+								return pot;
+							}
+							else if (answer == "RAISE") {
+								cout << "How much do you want to raise ?" << endl;
+								int betRaise;
+								cin >> betRaise;
+								pot += betRaise;
+								team[1].setActualBet(betRaise);
+								cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
+								cout << "The pot is now : " << pot << endl;
+								indiceActualPlayer++;
+								team[1].setBetBool(true);
+								team[0].setBetBool(true);
+							}
+							else
+								throw string("ERROR: PLEASE ENTER \"See\", \"Raise\" OR \"fold\"");
 						}
-						if (answer == "FOLD") {
-							endBet = true;
-							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
-							cout << "end bet time" << endl;
-							team[1].setBetBool(false);
-							return pot;
+						catch (string const& error) {
+							cerr << error << endl;
 						}
-						if (answer == "RAISE") {
-							cout << "How much do you want to raise ?" << endl;
-							int betRaise;
-							cin >> betRaise;
-							pot += betRaise;
-							team[1].setActualBet(betRaise);
-							cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
-							cout << "The pot is now : " << pot << endl;
-							indiceActualPlayer++;
-							team[1].setBetBool(true);
-							team[0].setBetBool(true);
-						}
+						
+						
 
 					}
 					else if (!team[0].hasBet()) {
@@ -687,26 +743,34 @@ int Game::betPair() {
 						string answer;
 						cin >> uppercase >> answer;
 						transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-						if (answer == "PASS") {
-							indiceActualPlayer++;
-							nbpass++;
-							if (nbpass == nbpair ) {
-								nbpass = 0;
-								endBet = true;
+						try {
+							if (answer == "PASS") {
+								indiceActualPlayer++;
+								nbpass++;
+								if (nbpass == nbpair) {
+									nbpass = 0;
+									endBet = true;
+								}
 							}
+							else if (answer == "RAISE") {
+								cout << "How much do you want to bet ?" << endl;
+								int betRaise;
+								cin >> betRaise;
+								pot += betRaise;
+								team[1].setActualBet(betRaise);
+								cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+								cout << "The pot is now : " << pot << endl;
+								indiceActualPlayer++;
+								team[1].setBetBool(true);
+								team[0].setBetBool(true);
+							}
+							else
+								throw string("ERROR: PLEASE ENTER \"Raise\" OR \"Pass\"");
 						}
-						if (answer == "RAISE") {
-							cout << "How much do you want to bet ?" << endl;
-							int betRaise;
-							cin >> betRaise;
-							pot += betRaise;
-							team[1].setActualBet(betRaise);
-							cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-							cout << "The pot is now : " << pot << endl;
-							indiceActualPlayer++;
-							team[1].setBetBool(true);
-							team[0].setBetBool(true);
+						catch (string const& error) {
+							cerr << error << endl;
 						}
+						
 					}
 				}
 			
@@ -769,14 +833,6 @@ int Game::betGame() {
 		}
 		cout << "actual player is : " << listPlayer[indiceActualPlayer].getName() << endl;
 		while (endBet == false) {			//we begin a loop for betting time
-
-			/*if (it < 4) {					// careful not to be out of range 
-				indiceActualPlayer = it;
-			}
-			else {
-				indiceActualPlayer = 0;
-				it = 0;
-			}*/
 			if (indiceActualPlayer == 4) {
 				indiceActualPlayer = 0;
 			}
@@ -798,32 +854,41 @@ int Game::betGame() {
 					string answer;
 					cin >> uppercase >> answer;
 					transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-					if (answer == "SEE") {	//<-------------------------------------------------------------------------------------- if player want to see, we end the loop and we return the pot
-						endBet = true;
-						cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
-						cout << "end bet time" << endl;
-						team[0].setBetBool(false);
-						return pot;
+					try {
+						if (answer == "SEE") {	//<-------------------------------------------------------------------------------------- if player want to see, we end the loop and we return the pot
+							endBet = true;
+							cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
+							cout << "end bet time" << endl;
+							team[0].setBetBool(false);
+							return pot;
+						}
+						else if (answer == "FOLD") {//<-------------------------------------------------------------------------------------- if player want to fold, we end the loop and we return the pot
+							endBet = true;
+							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
+							cout << "end bet time" << endl;
+							team[0].setBetBool(false);
+							return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+						}
+						else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
+							cout << "How much do you want to raise ?" << endl;
+							int betRaise;
+							cin >> betRaise;
+							pot += betRaise;
+							team[0].setActualBet(betRaise);
+							cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
+							cout << "The pot is now : " << pot << endl;
+							indiceActualPlayer++;
+							team[0].setBetBool(true);
+							team[1].setBetBool(true);
+						}
+						else
+							throw string("ERROR: PLEASE ENTER \"See\", \"Raise\" OR \"fold\"");
 					}
-					if (answer == "FOLD") {//<-------------------------------------------------------------------------------------- if player want to fold, we end the loop and we return the pot
-						endBet = true;
-						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
-						cout << "end bet time" << endl;
-						team[0].setBetBool(false);
-						return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+					catch (string const& error) {
+						cerr << error << endl;
 					}
-					if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
-						cout << "How much do you want to raise ?" << endl;
-						int betRaise;
-						cin >> betRaise;
-						pot += betRaise;
-						team[0].setActualBet(betRaise);
-						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
-						cout << "The pot is now : " << pot << endl;
-						indiceActualPlayer++;
-						team[0].setBetBool(true);
-						team[1].setBetBool(true);
-					}
+					
+					
 
 				}
 				else if (!team[1].hasBet()) {					//if the opponsing team has not bet yet, we have two choices raise or pass
@@ -832,26 +897,35 @@ int Game::betGame() {
 					string answer;
 					cin >> uppercase >> answer;
 					transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-					if (answer == "PASS") {					//if the player want to pass, we just go to the next player and we increase a counter to know how many players have already pass
-						indiceActualPlayer++;
-						nbpass++;
-						if (nbpass == nbgame) {
-							nbpass = 0;
-							endBet = true;
+					try {
+						if (answer == "PASS") {					//if the player want to pass, we just go to the next player and we increase a counter to know how many players have already pass
+							indiceActualPlayer++;
+							nbpass++;
+							if (nbpass == nbgame) {
+								nbpass = 0;
+								endBet = true;
+							}
 						}
+						else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
+							cout << "How much do you want to bet ?" << endl;
+							int betRaise;
+							cin >> betRaise;
+							pot += betRaise;
+							team[0].setActualBet(betRaise);
+							cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+							cout << "The pot is now : " << pot << endl;
+							indiceActualPlayer++;
+							team[0].setBetBool(true);
+							team[1].setBetBool(true);
+						}
+						else
+							throw string("ERROR: PLEASE ENTER \"Raise\" OR \"Pass\"");
 					}
-					if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
-						cout << "How much do you want to bet ?" << endl;
-						int betRaise;
-						cin >> betRaise;
-						pot += betRaise;
-						team[0].setActualBet(betRaise);
-						cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-						cout << "The pot is now : " << pot << endl;
-						indiceActualPlayer++;
-						team[0].setBetBool(true);
-						team[1].setBetBool(true);
+					catch (string const& error) {
+						cerr << error << endl;
 					}
+					
+					
 				}
 			}
 			else if ((listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(2)))) { // we do the same thing for team2
@@ -861,32 +935,41 @@ int Game::betGame() {
 					string answer;
 					cin >> uppercase >> answer;
 					transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-					if (answer == "SEE") {
-						endBet = true;
-						cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
-						cout << "end bet time" << endl;
-						team[1].setBetBool(false);
-						return pot;
+					try {
+						if (answer == "SEE") {
+							endBet = true;
+							cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
+							cout << "end bet time" << endl;
+							team[1].setBetBool(false);
+							return pot;
+						}
+						else if (answer == "FOLD") {
+							endBet = true;
+							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
+							cout << "end bet time" << endl;
+							team[1].setBetBool(false);
+							return pot;
+						}
+						else if (answer == "RAISE") {
+							cout << "How much do you want to raise ?" << endl;
+							int betRaise;
+							cin >> betRaise;
+							pot += betRaise;
+							team[1].setActualBet(betRaise);
+							cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
+							cout << "The pot is now : " << pot << endl;
+							indiceActualPlayer++;
+							team[1].setBetBool(true);
+							team[0].setBetBool(true);
+						}
+						else
+							throw string("ERROR: PLEASE ENTER \"See\", \"Raise\" OR \"fold\"");
 					}
-					if (answer == "FOLD") {
-						endBet = true;
-						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
-						cout << "end bet time" << endl;
-						team[1].setBetBool(false);
-						return pot;
+					catch (string const& error) {
+						cerr << error << endl;
 					}
-					if (answer == "RAISE") {
-						cout << "How much do you want to raise ?" << endl;
-						int betRaise;
-						cin >> betRaise;
-						pot += betRaise;
-						team[1].setActualBet(betRaise);
-						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
-						cout << "The pot is now : " << pot << endl;
-						indiceActualPlayer++;
-						team[1].setBetBool(true);
-						team[0].setBetBool(true);
-					}
+					
+					
 
 				}
 				else if (!team[0].hasBet()) {
@@ -895,26 +978,35 @@ int Game::betGame() {
 					string answer;
 					cin >> uppercase >> answer;
 					transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-					if (answer == "PASS") {
-						indiceActualPlayer++;
-						nbpass++;
-						if (nbpass == nbgame) {
-							nbpass = 0;
-							endBet = true;
+					try {
+						if (answer == "PASS") {
+							indiceActualPlayer++;
+							nbpass++;
+							if (nbpass == nbgame) {
+								nbpass = 0;
+								endBet = true;
+							}
 						}
+						else if (answer == "RAISE") {
+							cout << "How much do you want to bet ?" << endl;
+							int betRaise;
+							cin >> betRaise;
+							pot += betRaise;
+							team[1].setActualBet(betRaise);
+							cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+							cout << "The pot is now : " << pot << endl;
+							indiceActualPlayer++;
+							team[1].setBetBool(true);
+							team[0].setBetBool(true);
+						}
+						else
+							throw string("ERROR: PLEASE ENTER \"Raise\" OR \"Pass\"");
 					}
-					if (answer == "RAISE") {
-						cout << "How much do you want to bet ?" << endl;
-						int betRaise;
-						cin >> betRaise;
-						pot += betRaise;
-						team[1].setActualBet(betRaise);
-						cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-						cout << "The pot is now : " << pot << endl;
-						indiceActualPlayer++;
-						team[1].setBetBool(true);
-						team[0].setBetBool(true);
+					catch (string const& error) {
+						cerr << error << endl;
 					}
+					
+					
 				}
 			}
 
@@ -952,14 +1044,6 @@ int Game::betGame() {
 	cout << it;
 	cout << "actual player is " << listPlayer[indiceActualPlayer].getName() << endl;
 	while (endBet == false) {			//we begin a loop for betting time
-
-		/*if (it < 4) {					// careful not to be out of range 
-			indiceActualPlayer = it;
-		}
-		else {
-			indiceActualPlayer = 0;
-			it = 0;
-		}*/
 		cout << "----------begin bet time---------" << endl;
 		if (indiceActualPlayer == 4) {
 			indiceActualPlayer = 0;
@@ -973,32 +1057,41 @@ int Game::betGame() {
 				string answer;
 				cin >> uppercase >> answer;
 				transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-				if (answer == "SEE") {	//<-------------------------------------------------------------------------------------- if player want to see, we end the loop and we return the pot
-					endBet = true;
-					cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
-					cout << "end bet time" << endl;
-					team[0].setBetBool(false);
-					return pot;
+				try {
+					if (answer == "SEE") {	//<-------------------------------------------------------------------------------------- if player want to see, we end the loop and we return the pot
+						endBet = true;
+						cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
+						cout << "end bet time" << endl;
+						team[0].setBetBool(false);
+						return pot;
+					}
+					else if (answer == "FOLD") {//<-------------------------------------------------------------------------------------- if player want to fold, we end the loop and we return the pot
+						endBet = true;
+						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
+						cout << "end bet time" << endl;
+						team[0].setBetBool(false);
+						return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+					}
+					else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
+						cout << "How much do you want to raise ?" << endl;
+						int betRaise;
+						cin >> betRaise;
+						pot += betRaise;
+						team[0].setActualBet(betRaise);
+						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
+						cout << "The pot is now : " << pot << endl;
+						indiceActualPlayer++;
+						team[0].setBetBool(true);
+						team[1].setBetBool(false);
+					}
+					else
+						throw string("ERROR: PLEASE ENTER \"See\", \"Raise\" OR \"fold\"");
 				}
-				if (answer == "FOLD") {//<-------------------------------------------------------------------------------------- if player want to fold, we end the loop and we return the pot
-					endBet = true;
-					cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
-					cout << "end bet time" << endl;
-					team[0].setBetBool(false);
-					return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+				catch (string const& error) {
+					cerr << error << endl;
 				}
-				if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
-					cout << "How much do you want to raise ?" << endl;
-					int betRaise;
-					cin >> betRaise;
-					pot += betRaise;
-					team[0].setActualBet(betRaise);
-					cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
-					cout << "The pot is now : " << pot << endl;
-					indiceActualPlayer++;
-					team[0].setBetBool(true);
-					team[1].setBetBool(false);
-				}
+				
+				
 
 			}
 			else if (!team[1].hasBet()) {					//if the opponsing team has not bet yet, we have two choices raise or pass
@@ -1007,26 +1100,35 @@ int Game::betGame() {
 				string answer;
 				cin >> uppercase >> answer;
 				transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-				if (answer == "PASS") {					//if the player want to pass, we just go to the next player and we increase a counter to know how many players have already pass
-					indiceActualPlayer++;
-					nbpass++;
-					if (nbpass == 4) {
-						nbpass = 0;
-						endBet = true;
+				try {
+					if (answer == "PASS") {					//if the player want to pass, we just go to the next player and we increase a counter to know how many players have already pass
+						indiceActualPlayer++;
+						nbpass++;
+						if (nbpass == 4) {
+							nbpass = 0;
+							endBet = true;
+						}
 					}
+					else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
+						cout << "How much do you want to bet ?" << endl;
+						int betRaise;
+						cin >> betRaise;
+						pot += betRaise;
+						team[0].setActualBet(betRaise);
+						cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+						cout << "The pot is now : " << pot << endl;
+						indiceActualPlayer++;
+						team[0].setBetBool(true);
+						team[1].setBetBool(false);
+					}
+			else
+				throw string("ERROR: PLEASE ENTER \"Raise\" OR \"Pass\"");
 				}
-				if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
-					cout << "How much do you want to bet ?" << endl;
-					int betRaise;
-					cin >> betRaise;
-					pot += betRaise;
-					team[0].setActualBet(betRaise);
-					cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-					cout << "The pot is now : " << pot << endl;
-					indiceActualPlayer++;
-					team[0].setBetBool(true);
-					team[1].setBetBool(false);
+				catch (string const& error) {
+					cerr << error << endl;
 				}
+				
+				
 			}
 		}
 		else if ((listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(2)))) { // we do the same thing for team2
@@ -1036,32 +1138,41 @@ int Game::betGame() {
 				string answer;
 				cin >> uppercase >> answer;
 				transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-				if (answer == "SEE") {
-					endBet = true;
-					cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
-					cout << "end bet time" << endl;
-					team[1].setBetBool(false);
-					return pot;
+				try {
+					if (answer == "SEE") {
+						endBet = true;
+						cout << listPlayer[indiceActualPlayer].getName() << " want to see at the end of the hand" << endl;
+						cout << "end bet time" << endl;
+						team[1].setBetBool(false);
+						return pot;
+					}
+					else if (answer == "FOLD") {
+						endBet = true;
+						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
+						cout << "end bet time" << endl;
+						team[1].setBetBool(false);
+						return pot;
+					}
+					else if (answer == "RAISE") {
+						cout << "How much do you want to raise ?" << endl;
+						int betRaise;
+						cin >> betRaise;
+						pot += betRaise;
+						team[1].setActualBet(betRaise);
+						cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
+						cout << "The pot is now : " << pot << endl;
+						indiceActualPlayer++;
+						team[1].setBetBool(true);
+						team[0].setBetBool(false);
+					}
+					else
+						throw string("ERROR: PLEASE ENTER \"See\", \"Raise\" OR \"fold\"");
 				}
-				if (answer == "FOLD") {
-					endBet = true;
-					cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
-					cout << "end bet time" << endl;
-					team[1].setBetBool(false);
-					return pot;
+				catch (string const& error) {
+					cerr << error << endl;
 				}
-				if (answer == "RAISE") {
-					cout << "How much do you want to raise ?" << endl;
-					int betRaise;
-					cin >> betRaise;
-					pot += betRaise;
-					team[1].setActualBet(betRaise);
-					cout << listPlayer[indiceActualPlayer].getName() << " raised " << betRaise << " more " << endl;
-					cout << "The pot is now : " << pot << endl;
-					indiceActualPlayer++;
-					team[1].setBetBool(true);
-					team[0].setBetBool(false);
-				}
+				
+				
 
 			}
 			else if (!team[0].hasBet()) {
@@ -1070,26 +1181,34 @@ int Game::betGame() {
 				string answer;
 				cin >> uppercase >> answer;
 				transform(answer.begin(), answer.end(), answer.begin(), ::toupper);
-				if (answer == "PASS") {
-					indiceActualPlayer++;
-					nbpass++;
-					if (nbpass == 4) {
-						nbpass = 0;
-						endBet = true;
+				try {
+					if (answer == "PASS") {
+						indiceActualPlayer++;
+						nbpass++;
+						if (nbpass == 4) {
+							nbpass = 0;
+							endBet = true;
+						}
 					}
+					else if (answer == "RAISE") {
+						cout << "How much do you want to bet ?" << endl;
+						int betRaise;
+						cin >> betRaise;
+						pot += betRaise;
+						team[1].setActualBet(betRaise);
+						cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
+						cout << "The pot is now : " << pot << endl;
+						indiceActualPlayer++;
+						team[1].setBetBool(true);
+						team[0].setBetBool(false);
+					}
+					else
+						throw string("ERROR: PLEASE ENTER \"Raise\" OR \"Pass\"");
 				}
-				if (answer == "RAISE") {
-					cout << "How much do you want to bet ?" << endl;
-					int betRaise;
-					cin >> betRaise;
-					pot += betRaise;
-					team[1].setActualBet(betRaise);
-					cout << listPlayer[indiceActualPlayer].getName() << " bet " << betRaise << endl;
-					cout << "The pot is now : " << pot << endl;
-					indiceActualPlayer++;
-					team[1].setBetBool(true);
-					team[0].setBetBool(false);
+				catch (string const& error) {
+					cerr << error << endl;
 				}
+								
 			}
 		}
 
