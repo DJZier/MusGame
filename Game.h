@@ -545,7 +545,7 @@ int Game::betPair() {
 			}				
 		}
 		cout << 6 << endl;
-		cout << it;
+		cout << it << endl;
 		cout << "actual player is : " << listPlayer[indiceActualPlayer].getName() << endl;
 		while (endBet == false) {			//we begin a loop for betting time
 
@@ -558,21 +558,29 @@ int Game::betPair() {
 			}*/
 			if (indiceActualPlayer == 4) {
 				indiceActualPlayer = 0;
+				cout << "changment indice actual player" << endl;
 			}
 
-			while (listPlayer[indiceActualPlayer].haspair() == false) {		//if actual player doesn't have pair, go to the next player
-				if (indiceActualPlayer < 4) {
-					indiceActualPlayer = it++;
+			while (listPlayer[indiceActualPlayer].haspair() == false) {			//if actual player doesn't have pair, go to the next player
+				cout << "while" << endl;
+				cout << "indicatualplayer = " << indiceActualPlayer << endl;
+				cout << "it = " << it << endl;
+				if (indiceActualPlayer < 3) {
+					indiceActualPlayer++;
+					cout << "on cherche ceux quont des paires" << endl;
+					cout << "indicatualplayer = " << indiceActualPlayer << endl;
+					cout << listPlayer[indiceActualPlayer].getName()<< "est le joueur acuel" << endl;
 				}
 				else {
 					indiceActualPlayer = 0;
-					it = 0;
+					cout << listPlayer[indiceActualPlayer].getName()<< "est le joueur acuel" << endl;
 				}
 			}
 			
 				if ((listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(2)))) { //verify if actual player is in team1
+					cout << listPlayer[indiceActualPlayer].getName()<< "est dans la team 1" << endl;
 					if (team[1].hasBet()) {																													  //if yes, if opposing team has already bet, make a choice : raise see or fold				
-						cout << "opposing team has bet : " << team[1].getActualBet() << endl;
+						//cout << "opposing team has bet : " << team[1].getActualBet() << endl;
 						cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/see/fold)" << endl;
 						string answer;
 						cin >> uppercase >> answer;
@@ -600,7 +608,7 @@ int Game::betPair() {
 							cout << "The pot is now : " << pot << endl;
 							indiceActualPlayer++;
 							team[0].setBetBool(true); 
-							team[1].setBetBool(false);
+							//team[1].setBetBool(false);
 						}
 
 					}
@@ -634,7 +642,7 @@ int Game::betPair() {
 				}
 				else if ((listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(2)))) { // we do the same thing for team2
 					if (team[0].hasBet()) {
-						cout << "opposing team has bet : " << team[0].getActualBet() << endl;
+						//cout << "opposing team has bet : " << team[0].getActualBet() << endl;
 						cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/see/fold)" << endl;
 						string answer;
 						cin >> uppercase >> answer;
@@ -662,7 +670,7 @@ int Game::betPair() {
 							cout << "The pot is now : " << pot << endl;
 							indiceActualPlayer++;
 							team[1].setBetBool(true);
-							team[0].setBetBool(false);
+							//team[0].setBetBool(false);
 						}
 
 					}
@@ -703,6 +711,7 @@ int Game::betPair() {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int Game::betGame() {
+	cout << "on est al" << endl;
 	int nbgame = 0;
 	team[0].setBetBool(false);
 	team[1].setBetBool(false);
@@ -765,8 +774,8 @@ int Game::betGame() {
 			}
 
 			while (listPlayer[indiceActualPlayer].hasGame() == false) {		//if actual player doesn't have pair, go to the next player
-				if (indiceActualPlayer < 4) {
-					indiceActualPlayer = it++;
+				if (indiceActualPlayer < 3) {
+					indiceActualPlayer++;
 				}
 				else {
 					indiceActualPlayer = 0;
@@ -776,7 +785,7 @@ int Game::betGame() {
 
 			if ((listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(2)))) { //verify if actual player is in team1
 				if (team[1].hasBet()) {																													  //if yes, if opposing team has already bet, make a choice : raise see or fold				
-					cout << "opposing team has bet : " << team[1].getActualBet() << endl;
+					//cout << "opposing team has bet : " << team[1].getActualBet() << endl;
 					cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/see/fold)" << endl;
 					string answer;
 					cin >> uppercase >> answer;
@@ -804,7 +813,7 @@ int Game::betGame() {
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
 						team[0].setBetBool(true);
-						team[1].setBetBool(false);
+						//team[1].setBetBool(false);
 					}
 
 				}
@@ -831,13 +840,13 @@ int Game::betGame() {
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
 						team[0].setBetBool(true);
-						team[1].setBetBool(false);
+						//team[1].setBetBool(false);
 					}
 				}
 			}
 			else if ((listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(1))) || (listPlayer[indiceActualPlayer].operator==(team[1].getPlayer(2)))) { // we do the same thing for team2
 				if (team[0].hasBet()) {
-					cout << "opposing team has bet : " << team[0].getActualBet() << endl;
+					//cout << "opposing team has bet : " << team[0].getActualBet() << endl;
 					cout << listPlayer[indiceActualPlayer].getName() << " what do you do ? (raise/see/fold)" << endl;
 					string answer;
 					cin >> uppercase >> answer;
@@ -865,7 +874,7 @@ int Game::betGame() {
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
 						team[1].setBetBool(true);
-						team[0].setBetBool(false);
+						//team[0].setBetBool(false);
 					}
 
 				}
@@ -892,7 +901,7 @@ int Game::betGame() {
 						cout << "The pot is now : " << pot << endl;
 						indiceActualPlayer++;
 						team[1].setBetBool(true);
-						team[0].setBetBool(false);
+						//team[0].setBetBool(false);
 					}
 				}
 			}
@@ -987,7 +996,7 @@ int Game::betGame() {
 				if (answer == "pass") {					//if the player want to pass, we just go to the next player and we increase a counter to know how many players have already pass
 					indiceActualPlayer++;
 					nbpass++;
-					if (nbpass == nbgame) {
+					if (nbpass == 4) {
 						nbpass = 0;
 						endBet = true;
 					}
@@ -1048,7 +1057,7 @@ int Game::betGame() {
 				if (answer == "pass") {
 					indiceActualPlayer++;
 					nbpass++;
-					if (nbpass == nbgame) {
+					if (nbpass == 4) {
 						nbpass = 0;
 						endBet = true;
 					}
