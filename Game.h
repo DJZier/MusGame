@@ -26,6 +26,7 @@ public:
 	void showAllHands() const;
 	int betPair();
 	int betGame();
+	
 private:
 	vector<Player> listPlayer;
 	vector<Team> team;
@@ -354,6 +355,8 @@ int Game::betTime() {
 
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
 Team Game::compareHand(string lap) {
 	vector<Player> ranking = listPlayer;
 	for (int i = 0; i < 4; i++) {
@@ -402,7 +405,13 @@ Team Game::compareHand(string lap) {
 			return team[1];
 		}
 	}
+
+
 	else if (lap == "pair") {
+		int itmax = 0;
+		int it2ndmax = 0;
+		Rank secondpair1 = ACE;
+		Rank secondpair2 = ACE;// they are in case of equality
 		vector<Player> listPair;
 		vector<int> pairValue;
 		vector<Player> bestPair;
@@ -412,7 +421,7 @@ Team Game::compareHand(string lap) {
 		}
 		for (Player& player : listPair) {            //we create a vector of int corresponding to the value of the player's pair : 2=normal pair, 4=double pair, 6=three cards
 			int pairVal = 0;						 //the first value of this vector is the pair of the first player in listPair and so on...
-			for (int i = 0; i < 4 ; i++){
+			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
 					if (j == i)
 						NULL;
@@ -428,9 +437,9 @@ Team Game::compareHand(string lap) {
 		int max = 0;
 		int nbmax = 0;
 		int it = 0;
-		int count=0;
-		for (int& val : pairValue) {      //we find the best kind of pair in he game and how many palyers get it. for example if 3 persons have pair, 1has a normal pair and 2 have 
-			if (val > max) {			  // three same cards max will be equal to 6 (corresponding to three same cards) ans nbmax equal to 2 (to persons have three same cards)
+		int count = 0;
+		for (int& val : pairValue) {      //we find the best kind of pair in he game and how many palyers get it. for example if 3 persons have pair, 1 has a normal pair and 2 have 
+			if (val > max) {			  // three same cards max will be equal to 6 (corresponding to three same cards) ans nbmax equal to 2 (two persons have three same cards)
 				max = val;
 				nbmax = 1;
 				it = count;
@@ -455,10 +464,11 @@ Team Game::compareHand(string lap) {
 				if (pairValue[i] == max)
 					bestPair.push_back(listPair[i]);
 			}
-			int itmax = 0;				// we keep the index of the best player in itmax
+
 			int count = 0;
 			Rank maxrank = ACE;
-			if (max == 2 || max ==6) {      // if Best king of pair is normal or three same, we find each pair of the players and we compare the value to know which one is the best				
+			Rank maxrank2 = ACE;
+			if (max == 2 || max == 6) {      // if Best kind of pair is normal or three same, we find each pair of the players and we compare the value to know which one is the best				
 				for (Player& player : bestPair) {
 					for (int j = 0; j < 4; j++) {
 						for (int k = 0; k < 4; k++) {
@@ -466,8 +476,10 @@ Team Game::compareHand(string lap) {
 								NULL;
 							else {
 								if (player.getHand().getCard(j)->getRank() == player.getHand().getCard(k)->getRank()) {
-									if (player.getHand().getCard(j)->getRank() > maxrank) {
+									if (player.getHand().getCard(j)->getRank() >= maxrank) {
+										maxrank2 = maxrank;
 										maxrank = player.getHand().getCard(j)->getRank();
+										it2ndmax = itmax;
 										itmax = count;
 
 									}
@@ -477,42 +489,111 @@ Team Game::compareHand(string lap) {
 					}
 					count++;
 				}
+				if (maxrank == maxrank2) {
+					int itdeal=0;
+					int indiceActualPlayer;
+					for (Player& player : listPlayer) {				//first we find the index of the dealer						
+						itdeal++;
+						if (player.isDealer())
+							if (itdeal < 4) {
+								indiceActualPlayer = itdeal;
+							}
+							else {
+								indiceActualPlayer = 0;
+								itdeal = 0;
+							}
+					}
+					//we have the index of the best players with the best equal pairs in the bestPair range
+					//now we need to know their index in the listPlayer range to know which one is the closest from the dealer in the sense of the game
+					for (int i = 0; i < 4; i++) { //from the dealer we find the first one whith the best pair and we return his team (--> he won the lap)
+						if ((listPlayer[indiceActualPlayer] == bestPair[itmax]) || (listPlayer[indiceActualPlayer] == bestPair[it2ndmax])) {
+							if (listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(1)) || listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(2)))
+								return team[0];
+							else {
+								return team[1];
+							}
+						}
+						itdeal++;
+						if (itdeal == 4) {
+							itdeal = 0;
+						}
+					}
+				}
 			}
+
 			else {
-				int maxrank2 = 1;
+				
 				for (Player& player : bestPair) {					// if best kind of pair is double pair, for all players...
-					Rank pair1= ACE;
-					Rank pair2=ACE;
+					Rank pair1 = ACE;
+					Rank pair2 = ACE;
+
 					if (player.getHand().getCard(0)->getRank() == player.getHand().getCard(1)->getRank()) {		// ... if two first cards are equals, so value of the first pair is the value of the first cards and value of the second pair is value of the 3rd card
-						if (player.getHand().getCard(0)->getRank() > player.getHand().getCard(1)->getRank()) {	// if two first cards are different,so value of the first pair is the value of the first card and value of the second pair is value of the second card
+						if (player.getHand().getCard(0)->getRank() > player.getHand().getCard(2)->getRank()) {	// if two first cards are different,so value of the first pair is the value of the first card and value of the second pair is value of the second card
+
 							pair1 = player.getHand().getCard(0)->getRank();										// we put the best best in pair one to compare the pairs of the players easily
 							pair2 = player.getHand().getCard(2)->getRank();
 						}
 						else {
 							pair2 = player.getHand().getCard(0)->getRank();
-							pair1 = player.getHand().getCard(1)->getRank();
-						}						
+							pair1 = player.getHand().getCard(2)->getRank();
+						}
 					}
-					if (pair1 > maxrank) {				// if the value og the best pair of the player is better than the actual max, so we replace the max by this value
+					if (pair1 > maxrank) {				// if the value of the best pair of the player is better than the actual max, so we replace the max by this value
+						secondpair1 = maxrank;
+						secondpair2 = maxrank2;
 						maxrank = pair1;
 						maxrank2 = pair2;
+						it2ndmax = itmax;
 						itmax = count;					// and we store the index's value of the player in itmax
 					}
 					else if (pair1 == maxrank) {		// if best pair of the player equal to the maxrank so we compare the second pair
-						if (pair2 > maxrank2) {
+						if (pair2 >= maxrank2) {
+							secondpair2 = maxrank2;
 							maxrank2 = pair2;
+							it2ndmax = itmax;
 							itmax = count;
 						}
 					}
 					count++;
 				}
+				if ((secondpair1 == maxrank) && (secondpair2 == maxrank2)) {
+					int itdeal=0;
+					int indiceActualPlayer;
+					for (Player& player : listPlayer) {				//first we find the index of the dealer
+						itdeal++;
+							if (player.isDealer())
+								if (itdeal < 4) {
+									indiceActualPlayer = itdeal;
+								}
+								else {
+									indiceActualPlayer = 0;
+									itdeal = 0;
+								}
+					}
+					//we have the index of the best players with the best equal pairs in the bestPair range
+					//now we need to know their index in the listPlayer range to know which one is the closest from the dealer in the sense of the game
+					for (int i = 0; i < 4; i++) { //from the dealer we find the first one whith the best pair and we return his team (--> he won the lap)
+						if ((listPlayer[indiceActualPlayer] == bestPair[itmax]) || (listPlayer[indiceActualPlayer] == bestPair[it2ndmax])) {
+							if (listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(1)) || listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(2)))
+								return team[0];
+							else {
+								return team[1];
+							}
+						}
+						indiceActualPlayer++;
+						if (indiceActualPlayer == 4) {
+							indiceActualPlayer = 0;
+						}
+					}
+				}
 			}
-			if (bestPair[it].operator==(team[0].getPlayer(1)) || bestPair[it].operator==(team[0].getPlayer(2)))
+			if (bestPair[it].operator==(team[0].getPlayer(1)) || bestPair[it].operator==(team[0].getPlayer(2))) {
 				return team[0];
+			}				
 			else {
 				return team[1];
 			}
-		}	
+		}
 	}
 
 	if (lap == "game") {
