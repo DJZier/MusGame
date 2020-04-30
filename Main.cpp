@@ -13,7 +13,7 @@ int main() {
     game.dealCards(deck);
 
     while ((game.getScoreTeam(1) < 40) && (game.getScoreTeam(2) < 40)) {
-        int highPot;
+        /*int highPot;
         string highWin;
         cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
         highPot = game.betTime();
@@ -37,11 +37,12 @@ int main() {
             game.getTeam(2).addPoints(lowPot);
             lowWin = "Team 2 won the Low lap";
         }
-        cout << "lowPot =" << lowPot << endl;
+        cout << "lowPot =" << lowPot << endl;*/
         cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;        
         int pairPot = game.betPair();
         string pairWin;
         if (pairPot != 0) {
+            cout << "on rentre dans le if" << endl;
             if (game.compareHand("pair") == game.getTeam(1)) {
                 game.getTeam(1).addPoints(pairPot);
                 pairWin = "Team 1 won the Pair lap";
@@ -51,9 +52,9 @@ int main() {
                 pairWin = "Team 2 won the Pair lap";
             }
         }
-        
+        cout << pairWin << endl;
         cout << "PairPot =" << pairPot << endl;
-        cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
+       /* cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
         int gamePot = game.betGame();
         string gameWin;
         if (gamePot != 0) {
@@ -65,7 +66,7 @@ int main() {
                 game.getTeam(2).addPoints(gamePot);
                 gameWin = "Team 2 won the Game lap";
             }
-        }
+        }*/
         game.shutDown();
 
         cout << "do you want to quit the game ? (y/n)" << endl;

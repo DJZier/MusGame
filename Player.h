@@ -14,6 +14,7 @@ public:
 	string getName() const{ return name; };
 	Hand getHand() const { return hand; };
 	void setHand(Deck& deck); //set a hand of 4 cards
+	void setHand(Rank c1, Rank c2, Rank c3, Rank c4);
 	void setDealer(bool value); //to set player as a dealer
 	bool isDealer() const { return dealer; };
 	void clearHand();
@@ -34,6 +35,10 @@ Player::Player(){}
 
 void Player::setHand(Deck& deck) {
 		hand.drawCards(deck,4);
+}
+//-----------------------------------------------------
+void Player::setHand(Rank c1, Rank c2, Rank c3, Rank c4) {
+	hand.setHand(c1, c2, c3, c4);
 }
 //----------------------------------------
 void Player::setDealer(bool value) {

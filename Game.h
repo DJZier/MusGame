@@ -63,12 +63,21 @@ Game::Game()
 void Game::dealCards(Deck& deck){
 	deck.shuffle(1000);
 	cout << "distribution des cartes..." << endl;
-	for (Player& player : listPlayer) {
+	/*for (Player& player : listPlayer) {
 		player.setHand(deck);
-		player.getHand().showAllCards();
+		//player.getHand().showAllCards();
 		player.getHand().sortHand("high");
 		player.getHand().showAllCards();
-	}
+	}*/
+
+	listPlayer[0].setHand(TWO, FOUR, TWELVE, TEN);
+	listPlayer[0].getHand().showAllCards();
+	listPlayer[1].setHand(TWO, TEN, ELEVEN, TEN);
+	listPlayer[1].getHand().showAllCards();
+	listPlayer[2].setHand(TWO, TWO, FOUR, FIVE);
+	listPlayer[2].getHand().showAllCards();
+	listPlayer[3].setHand(TWO, TWO, FOUR, TEN);
+	listPlayer[3].getHand().showAllCards();
 		
 	team.pop_back();
 	team.pop_back();
@@ -469,6 +478,7 @@ Team Game::compareHand(string lap) {
 			Rank maxrank = ACE;
 			Rank maxrank2 = ACE;
 			if (max == 2 || max == 6) {      // if Best kind of pair is normal or three same, we find each pair of the players and we compare the value to know which one is the best				
+				cout << "pairs are normal or three same" << endl;
 				for (Player& player : bestPair) {
 					for (int j = 0; j < 4; j++) {
 						for (int k = 0; k < 4; k++) {
@@ -476,11 +486,13 @@ Team Game::compareHand(string lap) {
 								NULL;
 							else {
 								if (player.getHand().getCard(j)->getRank() == player.getHand().getCard(k)->getRank()) {
+									cout << "we found the pair" << endl;
 									if (player.getHand().getCard(j)->getRank() >= maxrank) {
 										maxrank2 = maxrank;
 										maxrank = player.getHand().getCard(j)->getRank();
 										it2ndmax = itmax;
 										itmax = count;
+										cout << "maxrank = " << maxrank << ", maxrank2 = " << maxrank2 << endl;
 
 									}
 								}
@@ -490,6 +502,7 @@ Team Game::compareHand(string lap) {
 					count++;
 				}
 				if (maxrank == maxrank2) {
+					cout << "maxrank == maxrank2" << endl;
 					int itdeal=0;
 					int indiceActualPlayer;
 					for (Player& player : listPlayer) {				//first we find the index of the dealer						
@@ -506,10 +519,16 @@ Team Game::compareHand(string lap) {
 					//we have the index of the best players with the best equal pairs in the bestPair range
 					//now we need to know their index in the listPlayer range to know which one is the closest from the dealer in the sense of the game
 					for (int i = 0; i < 4; i++) { //from the dealer we find the first one whith the best pair and we return his team (--> he won the lap)
+						cout << "on rentre dans le for" << endl;
 						if ((listPlayer[indiceActualPlayer] == bestPair[itmax]) || (listPlayer[indiceActualPlayer] == bestPair[it2ndmax])) {
-							if (listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(1)) || listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(2)))
+							cout << "premier if" << endl;
+							if (listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(1)) || listPlayer[indiceActualPlayer].operator==(team[0].getPlayer(2))) {
+								cout << "on retourne team1" << endl;
 								return team[0];
+							}
+								
 							else {
+								cout << "on retourne team2" << endl;
 								return team[1];
 							}
 						}

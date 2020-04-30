@@ -15,6 +15,8 @@ public:
     bool operator>=(const Hand & right) const;
     bool operator<(const Hand& right) const;
     Card* getCard(int numCard) const { return cards[numCard]; };
+    vector<Card*> getVecCards(){ return cards; };
+    void setHand(Rank c1, Rank c2, Rank c3, Rank c4);
     void sortHand(string order);
     bool hasPair();
     int sumHand();
@@ -29,6 +31,13 @@ void Hand::drawCards(Deck& deck, int num) {
         if (deck.getNumCards() > 0)
             cards.push_back(deck.drawCard());
     }
+}
+//------------------------------------------------
+void Hand::setHand(Rank c1, Rank c2, Rank c3, Rank c4) {
+   cards.push_back(new Card(c1));
+   cards.push_back(new Card(c2));
+   cards.push_back(new Card(c3));
+   cards.push_back(new Card(c4));
 }
 
 //-----------------------------
