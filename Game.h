@@ -70,13 +70,13 @@ void Game::dealCards(Deck& deck){
 		player.getHand().showAllCards();
 	}*/
 
-	listPlayer[0].setHand(TWO, FOUR, TWELVE, TEN);
+	listPlayer[0].setHand(TWELVE, TWELVE, TWELVE, ACE);
 	listPlayer[0].getHand().showAllCards();
-	listPlayer[1].setHand(TWO, THREE, ELEVEN, TEN);
+	listPlayer[1].setHand(TWELVE, TWELVE, TWELVE, ACE);
 	listPlayer[1].getHand().showAllCards();
-	listPlayer[2].setHand(TWO, TWO, FOUR, FIVE);
+	listPlayer[2].setHand(TWELVE, TWO, ACE, ACE);
 	listPlayer[2].getHand().showAllCards();
-	listPlayer[3].setHand(TWO, TWO, FOUR, TEN);
+	listPlayer[3].setHand(ACE, SIX, FOUR, TWO);
 	listPlayer[3].getHand().showAllCards();
 		
 	team.pop_back();
@@ -424,7 +424,7 @@ Team Game::compareHand(string lap) {
 		vector<Player> listPair;
 		vector<int> pairValue;
 		vector<Player> bestPair;
-		for (Player& player : ranking) {             //we put all players with pairs in a vector
+		for (Player& player : listPlayer) {             //we put all players with pairs in a vector
 			if (player.haspair())
 				listPair.push_back(player);
 		}
@@ -441,6 +441,10 @@ Team Game::compareHand(string lap) {
 					}
 				}
 			}
+			
+			if (pairVal == 4) {  // if there is double pair, we attribute a hiher value than simple pair and three same, because double pair is better than the others
+				pairVal = 8;
+			}
 			pairValue.push_back(pairVal);
 		}
 		int max = 0;
@@ -453,12 +457,11 @@ Team Game::compareHand(string lap) {
 				nbmax = 1;
 				it = count;
 			}
-			else if (val = max) {
+			else if (val == max) {
 				nbmax++;
 			}
 			count++;
 		}
-
 		if (nbmax == 1) {					// if only 1 person has the best kind of pair in this hand, he will automatically win so we return his team
 			if (listPair[it].operator==(team[0].getPlayer(1)) || listPair[it].operator==(team[0].getPlayer(2)))
 				return team[0];
@@ -471,6 +474,7 @@ Team Game::compareHand(string lap) {
 
 			for (int i = 0; i < pairValue.size(); i++) {  //if several people have the best kind of pair, we create a vector with those players and we have to compare the pairs
 				if (pairValue[i] == max)
+					cout << listPair[i].getName() << endl;
 					bestPair.push_back(listPair[i]);
 			}
 
