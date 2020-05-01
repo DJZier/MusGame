@@ -72,7 +72,7 @@ void Game::dealCards(Deck& deck){
 
 	listPlayer[0].setHand(TWO, FOUR, TWELVE, TEN);
 	listPlayer[0].getHand().showAllCards();
-	listPlayer[1].setHand(TWO, TEN, ELEVEN, TEN);
+	listPlayer[1].setHand(TWO, THREE, ELEVEN, TEN);
 	listPlayer[1].getHand().showAllCards();
 	listPlayer[2].setHand(TWO, TWO, FOUR, FIVE);
 	listPlayer[2].getHand().showAllCards();
@@ -487,14 +487,23 @@ Team Game::compareHand(string lap) {
 							else {
 								if (player.getHand().getCard(j)->getRank() == player.getHand().getCard(k)->getRank()) {
 									cout << "we found the pair" << endl;
-									if (player.getHand().getCard(j)->getRank() >= maxrank) {
+									if (player.getHand().getCard(j)->getRank() > maxrank) {
 										maxrank2 = maxrank;
 										maxrank = player.getHand().getCard(j)->getRank();
 										it2ndmax = itmax;
 										itmax = count;
-										cout << "maxrank = " << maxrank << ", maxrank2 = " << maxrank2 << endl;
-
 									}
+									else if (player.getHand().getCard(j)->getRank() == maxrank) {
+										if (bestPair[itmax] != player) {
+											maxrank2 = maxrank;
+											maxrank = player.getHand().getCard(j)->getRank();
+											it2ndmax = itmax;
+											itmax = count;
+										}
+										cout << "maxrank = " << maxrank << ", maxrank2 = " << maxrank2 << endl;
+									}									
+
+									
 								}
 							}
 						}
@@ -516,6 +525,7 @@ Team Game::compareHand(string lap) {
 								itdeal = 0;
 							}
 					}
+					cout << "actual player is " << listPlayer[indiceActualPlayer].getName() << endl;
 					//we have the index of the best players with the best equal pairs in the bestPair range
 					//now we need to know their index in the listPlayer range to know which one is the closest from the dealer in the sense of the game
 					for (int i = 0; i < 4; i++) { //from the dealer we find the first one whith the best pair and we return his team (--> he won the lap)
@@ -532,9 +542,9 @@ Team Game::compareHand(string lap) {
 								return team[1];
 							}
 						}
-						itdeal++;
-						if (itdeal == 4) {
-							itdeal = 0;
+						indiceActualPlayer++;
+						if (indiceActualPlayer == 4) {
+							indiceActualPlayer = 0;
 						}
 					}
 				}
