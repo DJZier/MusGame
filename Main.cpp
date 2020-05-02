@@ -10,15 +10,17 @@ using namespace std;
 //-----------------------------
 int main() {
     Deck deck;
+    Deck* deckptr;
     Game game;
     
 
     while ((game.getScoreTeam(1) < 40) && (game.getScoreTeam(2) < 40)) {
-        deck = *(new Deck());
+        deckptr = new Deck();
+        deck = *(deckptr);
         game.dealCards(deck);
         int highPot;
         string highWin;
-        /*cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
+        cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
         highPot = game.betTime();
         if (game.compareHand("high") == game.getTeam(1)) {
             highWin = "Team 1 won the High lap";
@@ -69,7 +71,7 @@ int main() {
             game.addPoints(2, pairPot);
         }
         cout << pairWin << endl;
-        game.showScore();*/
+        game.showScore();
         cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
         int gamePot = game.betGame();
         string gameWin;
@@ -122,7 +124,7 @@ int main() {
         cout << gameWin << endl;
         game.showScore();
         game.shutDown();
-
+        delete deckptr;
         cout << "do you want to quit the game ? (y/n)" << endl;
         string answer;
         cin >> answer;

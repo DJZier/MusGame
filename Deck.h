@@ -22,7 +22,6 @@ private:
 };
 //-----------------------------
 Deck::Deck() {
-    cout << "creation of a Deck..." << endl;
     for (int r = 10; r >= 1; --r)
         for (int s = 3; s >= 0; --s)
             cards.push_back(new Card((Rank)r));
@@ -39,7 +38,6 @@ Card* Deck::drawCard() {
 }
 //-----------------------------
 void Deck::shuffle(int nbswap) {
-    cout << "shuffling Deck..." << endl;
     srand(time(NULL));
     for (int i = 0; i < nbswap; i++) {
         int tot = 39;

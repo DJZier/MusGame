@@ -2,8 +2,12 @@
 #define GAME_H
 #include <iostream>
 #include <algorithm>
+#include <fstream>
+#include <string>
+#include <Windows.h>
 #include "Team.h"
 using namespace std;
+
 //-----------------------------------
 enum Choice {
 	SEE, RAISE, FOLD
@@ -37,7 +41,58 @@ private:
 //------------------------------------------------------------
 Game::Game()
 {
-	//gameDeck = deck;
+	cout << "-----------------------------------------------------------------------------" << endl;
+	cout << "##             ## ######### ##        ######### ######### ###   ### #########" << endl;
+	cout << " ##    ###    ##  ##        ##        ##        ##     ## ## # # ## ##       " << endl;
+	cout << "  ##  #####  ##   #####     ##        ##        ##     ## ##  #  ## #####    " << endl;
+	cout << "   ####   ####    ##        ##        ##        ##     ## ##     ## ##       " << endl;
+	cout << "    ##    ###     ######### ######### ######### ######### ##     ## #########" << endl;
+	cout << "-----------------------------------------------------------------------------" << endl;
+	cout << "-----------------------------------------------------------------------------" << endl;
+	cout << "#   ### ### #  ##   ### #   ### # #    #   # #  #   ###                      " << endl;
+	cout << "#   ##   #     #    ### #   #=#  #     # # # #  #   #                        " << endl;
+	cout << "### ###  #    ##    #   ### # # #      #   # #### ###                        " << endl;
+
+	cout << "Do you want to read the rules before begin to play ?(y/n)" << endl;
+	string response;	
+	while ((response != "N") && (response != "Y")) {
+		cin >> response;
+		transform(response.begin(), response.end(), response.begin(), ::toupper);
+		try {
+			if (response == "Y") {
+				string filename("\\rules.txt");
+				ifstream file;
+				file.open(filename.c_str());
+
+				if (file.fail()) {
+					cout << "file not open !" << endl;
+				}
+				else {
+					cout << "file open !!" << endl;
+					string line;
+
+					while (getline(file, line)) {
+						cout << line << endl;
+					}
+				}
+			}
+			else if (response == "N") {
+				NULL;
+			}
+			else {
+				throw string("ERROR: PLEASE ENTER \"o\",  OR \"y\"");
+			}
+		}
+		catch (string const& error)
+		{
+			cerr << error << endl;
+		}
+	}
+	cout << endl;
+	cout << endl;
+	cout << endl;
+	cout << "Let's begin to play ! " << endl;
+	cout << "Please enter the name of the 4th players (players 1 and 3 will be in Team 1 and players 2 and 4 will be in Team 2" << endl;
 	string J1, J2, J3, J4;
 	cout << "Type the player 1's name :" << endl;
 	cin >> J1;
@@ -55,37 +110,33 @@ Game::Game()
 
 	team.push_back(Team(listPlayer[0], listPlayer[2]));
 	team.push_back(Team(listPlayer[1], listPlayer[3]));
-
+	Sleep(500);
 	listPlayer[0].setDealer(true);  //initialization of player 1 as a dealer to set the sense of play
 	cout << listPlayer[0].getName() << " is Dealer" << endl;
+	Sleep(500);
 	cout << listPlayer[1].getName() << " begin" << endl;
+	Sleep(500);
 		
 	
 }
 //------------------------------------------------------------
 void Game::dealCards(Deck& deck){
 	deck.shuffle(1000);
-	cout << "distribution des cartes..." << endl;
-	/*for (Player& player : listPlayer) {
+	for (Player& player : listPlayer) {
 		player.setHand(deck);
-		//player.getHand().showAllCards();
 		player.getHand().sortHand("high");
-		//player.getHand().showAllCards();
-	}*/
+	}
 
-	listPlayer[0].setHand(TEN, TEN, TEN, ACE);
+	/*listPlayer[0].setHand(TEN, TEN, TEN, ACE);
 	listPlayer[0].getHand().showAllCards();
 	listPlayer[1].setHand(TEN, TEN, TEN, TEN);
 	listPlayer[1].getHand().showAllCards();
 	listPlayer[2].setHand(TEN, ACE, FIVE, TWO);
 	listPlayer[2].getHand().showAllCards();
 	listPlayer[3].setHand(SEVEN, SEVEN, FIVE, TEN);
-	listPlayer[3].getHand().showAllCards();
+	listPlayer[3].getHand().showAllCards();*/
 		
-	/*team.pop_back();
-	team.pop_back();
-	team.push_back(Team(listPlayer[0], listPlayer[2]));
-	team.push_back(Team(listPlayer[1], listPlayer[3]));*/
+
 	
 }
 //------------------------------------------------------------
@@ -191,7 +242,6 @@ int Game::getScoreTeam(int numTeam) {
 
 //------------------------------------------------------------------------------------------------------------------------------------------
 int Game::betTime() {
-	cout << "loading bet time" << endl;
 	int pot = 0;
 	int it = 0;
 	int indiceActualPlayer=-1;
@@ -213,7 +263,6 @@ int Game::betTime() {
 			}		
 	}
 	while (endBet == false) {
-		cout << "----------begin bet time---------" << endl;
 		if (indiceActualPlayer == 4) {
 			indiceActualPlayer = 0;
 		}
