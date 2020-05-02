@@ -22,6 +22,7 @@ public:
 	bool operator==(const Team& right) const;
 	bool hasPair();
 	bool hasGame();
+	int getValTotPair();
 
 
 private:
@@ -117,4 +118,58 @@ bool Team::hasGame() {
 		return true;
 	return false;
 }
+//----------------------------------------------------------------------------------------------
+int Team::getValTotPair() {
+	int ValPair=0;
+	if (P1.haspair()) {
+		int pairValP1 = 0;						 //the first value of this vector is the pair of the first player in listPair and so on...
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (j == i)
+					NULL;
+				else {
+					if (P1.getHand().getCard(i)->getRank() == P1.getHand().getCard(j)->getRank()) {
+						pairValP1++;
+					}
+				}
+			}
+		}
+		if (pairValP1 == 2) {
+			ValPair ++;
+		}
+		else if (pairValP1 == 6) {
+			ValPair += 2;
+		}
+		else if ((pairValP1 == 4)|| (pairValP1 == 12)) {
+			ValPair += 3;
+		}
+		
+	}
+	if (P2.haspair()) {
+		int pairValP2 = 0;						 //the first value of this vector is the pair of the first player in listPair and so on...
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				if (j == i)
+					NULL;
+				else {
+					if (P2.getHand().getCard(i)->getRank() == P2.getHand().getCard(j)->getRank()) {
+						pairValP2++;
+					}
+				}
+			}
+		}
+		if (pairValP2 == 2) {
+			ValPair++;
+		}
+		else if (pairValP2 == 6) {
+			ValPair += 2;
+		}
+		else if ((pairValP2 == 4) || (pairValP2 == 12)) {
+			ValPair += 3;
+		}
+	}
+	return ValPair;
+}
+
+
 #endif

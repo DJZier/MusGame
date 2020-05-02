@@ -22,6 +22,7 @@ public:
 	Team getTeam(int numTeam) ;
 	int getScoreTeam(int numTeam);
 	int betTime();
+	int getValTotPair(int numteam);
 	Team compareHand(string lap);
 	void showAllHands() const;
 	int betPair();
@@ -67,16 +68,16 @@ void Game::dealCards(Deck& deck){
 		player.setHand(deck);
 		//player.getHand().showAllCards();
 		player.getHand().sortHand("high");
-		player.getHand().showAllCards();
+		//player.getHand().showAllCards();
 	}*/
 
-	listPlayer[0].setHand(TWELVE, TWELVE, TWELVE, ACE);
+	listPlayer[0].setHand(TEN, TEN, TEN, TEN);
 	listPlayer[0].getHand().showAllCards();
-	listPlayer[1].setHand(TWELVE, TWELVE, TWELVE, ACE);
+	listPlayer[1].setHand(TEN, ACE, FIVE, TWO);
 	listPlayer[1].getHand().showAllCards();
-	listPlayer[2].setHand(TWELVE, TWO, ACE, ACE);
+	listPlayer[2].setHand(TEN, ACE, FIVE, TWO);
 	listPlayer[2].getHand().showAllCards();
-	listPlayer[3].setHand(ACE, SIX, FOUR, TWO);
+	listPlayer[3].setHand(TEN, SEVEN, FIVE, TWO);
 	listPlayer[3].getHand().showAllCards();
 		
 	team.pop_back();
@@ -106,8 +107,12 @@ void Game::shutDown() {
 
 //---------------------------------------------------------------------------------------------------------------------------------
 void Game::showScore() const {
-	cout << "Team 1's score : " << team[0].getScore() << endl;
-	cout << "Team 2's score : " << team[1].getScore() << endl;
+	cout << "scores :" << endl;
+	cout << "----------------" << endl;
+	cout << "| Team 1 | " << setw(4) << team[0].getScore() << "|" << endl;
+	cout << "----------------" << endl;
+	cout << "| Team 2 | " << setw(4) << team[1].getScore() << "|" << endl;
+	cout << "----------------" << endl;
 }
 void Game::setScore(int numTeam, int newScore)
 {
@@ -142,9 +147,9 @@ void Game::addPoints(int numTeam, int addScore) {
 Team Game::getTeam(int numTeam){
 	try {
 		if (numTeam == 1)
-			return team[0];
+			return (team[0]);
 		else if (numTeam == 2)
-			return team[1];
+			return (team[1]);
 		else
 			throw string("ERROR: NUMBER OF TEAM INVALID, PLEASE ENTER 1 OR 2");
 	}
@@ -364,7 +369,19 @@ int Game::betTime() {
 
 }
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
-
+int Game::getValTotPair(int numteam) {
+	try {
+		if (numteam == 1)
+			return team[0].getValTotPair();
+		else if (numteam == 2)
+			return team[1].getValTotPair();
+		else
+			throw string("ERROR: NUMBER OF TEAM INVALID, PLEASE ENTER 1 OR 2");
+	}
+	catch (string const& error) {
+		cerr << error << endl;
+	}
+}
 //----------------------------------------------------------------------------------------------------------------------------------------------------------
 Team Game::compareHand(string lap) {
 	vector<Player> ranking = listPlayer;
@@ -428,7 +445,7 @@ Team Game::compareHand(string lap) {
 			if (player.haspair())
 				listPair.push_back(player);
 		}
-		for (Player& player : listPair) {            //we create a vector of int corresponding to the value of the player's pair : 2=normal pair, 4=double pair, 6=three cards
+		for (Player& player : listPair) {            //we create a vector of int corresponding to the value of the player's pair : 2=normal pair, 4=double pair, 6=three cards, 12= double pair (4same cards)
 			int pairVal = 0;						 //the first value of this vector is the pair of the first player in listPair and so on...
 			for (int i = 0; i < 4; i++) {
 				for (int j = 0; j < 4; j++) {
@@ -442,7 +459,7 @@ Team Game::compareHand(string lap) {
 				}
 			}
 			
-			if (pairVal == 4) {  // if there is double pair, we attribute a hiher value than simple pair and three same, because double pair is better than the others
+			if ((pairVal == 4) || (pairVal == 12)) {  // if there is double pair, we attribute a hiher value than simple pair and three same, because double pair is better than the others
 				pairVal = 8;
 			}
 			pairValue.push_back(pairVal);
@@ -630,17 +647,35 @@ Team Game::compareHand(string lap) {
 	}
 
 	if (lap == "game") {
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 3; j++) {
-				if (ranking[j + 1].getHand().sumHand() > ranking[j].getHand().sumHand()) {
-					Player temp = ranking[j + 1];
-					ranking[j + 1] = ranking[j];
-					ranking[j] = temp;
+		int indiceActualPlayer;
+		int indicePlayer;
+		int itdeal = 0;
+		int bestGame=0;
+		int indexBestGame;
+		for (Player& player : listPlayer) {				//first we find the index of the dealer						
+			itdeal++;
+			if (player.isDealer())
+				if (itdeal < 4) {
+					indiceActualPlayer = itdeal;
 				}
+				else {
+					indiceActualPlayer = 0;
+					itdeal = 0;
+				}
+		}
+		for (int i = 0; i < 4; i++){
+			if (listPlayer[indiceActualPlayer].getHand().sumHand() > bestGame) {
+				bestGame = listPlayer[indiceActualPlayer].getHand().sumHand();
+				indexBestGame = indiceActualPlayer;
+			}
+			indiceActualPlayer++;
+			if (indiceActualPlayer == 4) {
+				indiceActualPlayer = 0;
 			}
 		}
-		if (ranking[0].operator==(team[0].getPlayer(1)) || ranking[0].operator==(team[0].getPlayer(2)))
+		if (indexBestGame == 0 || indexBestGame == 2) {
 			return team[0];
+		}
 		else {
 			return team[1];
 		}
@@ -1301,6 +1336,7 @@ int Game::betGame() {
 			}
 		}
 	}
+	cout << "pot = " << pot << endl;
 	cout << "end bet time" << endl;
 	return pot;
 }
