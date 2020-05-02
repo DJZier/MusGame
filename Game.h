@@ -73,9 +73,9 @@ void Game::dealCards(Deck& deck){
 		//player.getHand().showAllCards();
 	}*/
 
-	listPlayer[0].setHand(TEN, FIVE, THREE, ACE);
+	listPlayer[0].setHand(TEN, TEN, TEN, ACE);
 	listPlayer[0].getHand().showAllCards();
-	listPlayer[1].setHand(TEN, TEN, FIVE, TWO);
+	listPlayer[1].setHand(TEN, TEN, TEN, TEN);
 	listPlayer[1].getHand().showAllCards();
 	listPlayer[2].setHand(TEN, ACE, FIVE, TWO);
 	listPlayer[2].getHand().showAllCards();
@@ -694,8 +694,18 @@ Team Game::compareHand(string lap) {
 				}
 		}
 		for (int i = 0; i < 4; i++){
-			if (listPlayer[indiceActualPlayer].getHand().sumHand() > bestGame) {
-				bestGame = listPlayer[indiceActualPlayer].getHand().sumHand();
+			int sum;
+			if (listPlayer[indiceActualPlayer].getHand().sumHand() == 31) {
+				sum = 100;
+			}
+			else if (listPlayer[indiceActualPlayer].getHand().sumHand() == 32) {
+				sum = 50;
+			}
+			else {
+				sum = listPlayer[indiceActualPlayer].getHand().sumHand();
+			}
+			if (sum > bestGame) {
+				bestGame = sum;
 				indexBestGame = indiceActualPlayer;
 			}
 			indiceActualPlayer++;

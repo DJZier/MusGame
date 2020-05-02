@@ -87,14 +87,28 @@ int main() {
             }
         }
         else if (gamePot == 0) {
-            if (game.compareHand("game") == game.getTeam(1)) {
-                game.addPoints(1, 1);
-                gameWin = "Team 1 won the Game lap";
+            if (game.teamHasGame(1) || game.teamHasGame(2)) {
+                if (game.compareHand("game") == game.getTeam(1)) {
+                    gamePot = game.getValTotGame(1);
+                    game.addPoints(1, gamePot);
+                    gameWin = "Team 1 won the Game lap";
+                }
+                else if (game.compareHand("game") == game.getTeam(2)) {
+                    gamePot = game.getValTotGame(2);
+                    game.addPoints(2, gamePot);
+                    gameWin = "Team 2 won the Game lap";
+                }
             }
-            else if (game.compareHand("game") == game.getTeam(2)) {
-                game.addPoints(2, 1);
-                gameWin = "Team 2 won the Game lap";
-            }
+            else {
+                if (game.compareHand("game") == game.getTeam(1)) {
+                    game.addPoints(1, 1);
+                    gameWin = "Team 1 won the Game lap";
+                }
+                else if (game.compareHand("game") == game.getTeam(2)) {
+                    game.addPoints(2, 1);
+                    gameWin = "Team 2 won the Game lap";
+                }
+            }           
         }    
         else if (gamePot == -1) {
             gamePot = game.getValTotGame(1);
