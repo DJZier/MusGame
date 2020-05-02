@@ -44,11 +44,11 @@ int main() {
             lowWin = "Team 2 won the Low lap";
         }
         cout << lowWin << endl;
-        game.showScore();*/
+        game.showScore();
         cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;        
         int pairPot = game.betPair();
         string pairWin;
-        if (pairPot > 0) {
+        if (pairPot >= 0) {
             if (game.compareHand("pair") == game.getTeam(1)) {
                 pairPot += game.getValTotPair(1);
                 game.addPoints(1,pairPot);
@@ -69,23 +69,44 @@ int main() {
             game.addPoints(2, pairPot);
         }
         cout << pairWin << endl;
-        game.showScore();
-        /*cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
+        game.showScore();*/
+        cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
         int gamePot = game.betGame();
         string gameWin;
-
-        if (gamePot != 0) {
+        if (gamePot > 0) {
             if (game.compareHand("game") == game.getTeam(1)) {
-                game.addPoints(1,gamePot);
+                gamePot += game.getValTotGame(1);
+                cout << gamePot << endl;
+                game.addPoints(1, gamePot);
                 gameWin = "Team 1 won the Game lap";
             }
             else if (game.compareHand("game") == game.getTeam(2)) {
-                game.addPoints(2,gamePot);
+                gamePot += game.getValTotGame(2);
+                game.addPoints(2, gamePot);
                 gameWin = "Team 2 won the Game lap";
             }
         }
+        else if (gamePot == 0) {
+            if (game.compareHand("game") == game.getTeam(1)) {
+                game.addPoints(1, 1);
+                gameWin = "Team 1 won the Game lap";
+            }
+            else if (game.compareHand("game") == game.getTeam(2)) {
+                game.addPoints(2, 1);
+                gameWin = "Team 2 won the Game lap";
+            }
+        }    
+        else if (gamePot == -1) {
+            gamePot += game.getValTotGame(1);
+            game.addPoints(1, gamePot);
+        }
+        else if (gamePot == -2) {
+            gamePot += game.getValTotGame(2);
+            game.addPoints(2, gamePot);
+        }
+                          
         cout << gameWin << endl;
-        game.showScore();*/
+        game.showScore();
         game.shutDown();
 
         cout << "do you want to quit the game ? (y/n)" << endl;

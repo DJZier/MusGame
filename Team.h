@@ -23,6 +23,7 @@ public:
 	bool hasPair();
 	bool hasGame();
 	int getValTotPair();
+	int getValTotGame();
 
 
 private:
@@ -169,6 +170,31 @@ int Team::getValTotPair() {
 		}
 	}
 	return ValPair;
+}
+
+//----------------------------------------------------------------------------------------------
+int Team::getValTotGame() {
+	int ValGame = 0;
+	if (P1.hasGame()) {
+		if (P1.getHand().sumHand() == 31) {
+			ValGame += 3;
+		}
+		else {
+
+			ValGame += 2;
+			cout << "ajouté " << ValGame << endl;
+		}
+
+	}
+	if (P2.hasGame()) {
+		if (P2.getHand().sumHand() == 31) {
+			ValGame += 3;
+		}
+		else {
+			ValGame += 2;
+		}
+	}
+	return ValGame;
 }
 
 

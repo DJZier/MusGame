@@ -19,10 +19,12 @@ public:
 	void showScore() const; 
 	void setScore(int numTeam, int newScore);
 	void addPoints(int numTeam, int addScore);
+	bool teamHasGame(int numTeam);
 	Team getTeam(int numTeam) ;
 	int getScoreTeam(int numTeam);
 	int betTime();
 	int getValTotPair(int numteam);
+	int getValTotGame(int numteam);
 	Team compareHand(string lap);
 	void showAllHands() const;
 	int betPair();
@@ -64,21 +66,21 @@ Game::Game()
 void Game::dealCards(Deck& deck){
 	deck.shuffle(1000);
 	cout << "distribution des cartes..." << endl;
-	/*for (Player& player : listPlayer) {
+	for (Player& player : listPlayer) {
 		player.setHand(deck);
 		//player.getHand().showAllCards();
 		player.getHand().sortHand("high");
 		//player.getHand().showAllCards();
-	}*/
+	}
 
-	listPlayer[0].setHand(TEN, TEN, TEN, TEN);
+	/*listPlayer[0].setHand(TEN, TEN, TEN, TEN);
 	listPlayer[0].getHand().showAllCards();
 	listPlayer[1].setHand(TEN, ACE, FIVE, TWO);
 	listPlayer[1].getHand().showAllCards();
 	listPlayer[2].setHand(TEN, ACE, FIVE, TWO);
 	listPlayer[2].getHand().showAllCards();
-	listPlayer[3].setHand(TEN, SEVEN, FIVE, TWO);
-	listPlayer[3].getHand().showAllCards();
+	listPlayer[3].setHand(SEVEN, SEVEN, FIVE, TWO);
+	listPlayer[3].getHand().showAllCards();*/
 		
 	team.pop_back();
 	team.pop_back();
@@ -136,6 +138,20 @@ void Game::addPoints(int numTeam, int addScore) {
 			team[0].addPoints(addScore);
 		else if (numTeam == 2)
 			team[1].addPoints(addScore);
+		else
+			throw string("ERROR: NUMBER OF TEAM INVALID, PLEASE ENTER 1 OR 2");
+	}
+	catch (string const& error) {
+		cerr << error << endl;
+	}
+}
+//---------------------------------------------------------------------------------------------------------------------------------
+bool Game::teamHasGame(int numTeam) {
+	try {
+		if (numTeam == 1)
+			return team[0].hasGame();
+		else if (numTeam == 2)
+			team[1].hasBet();
 		else
 			throw string("ERROR: NUMBER OF TEAM INVALID, PLEASE ENTER 1 OR 2");
 	}
@@ -375,6 +391,20 @@ int Game::getValTotPair(int numteam) {
 			return team[0].getValTotPair();
 		else if (numteam == 2)
 			return team[1].getValTotPair();
+		else
+			throw string("ERROR: NUMBER OF TEAM INVALID, PLEASE ENTER 1 OR 2");
+	}
+	catch (string const& error) {
+		cerr << error << endl;
+	}
+}
+//----------------------------------------------------------------------------------------------------------------------------------------------------------
+int Game::getValTotGame(int numteam) {
+	try {
+		if (numteam == 1)
+			return team[0].getValTotGame();
+		else if (numteam == 2)
+			return team[1].getValTotGame();
 		else
 			throw string("ERROR: NUMBER OF TEAM INVALID, PLEASE ENTER 1 OR 2");
 	}
@@ -941,7 +971,7 @@ int Game::betGame() {
 			}
 			if (team[1].hasGame()) {
 				cout << "only Team 2 has Game" << endl;
-				return -1;
+				return -2;
 			}
 		}
 		cout << "both teams have Games let's bet.." << endl;		// if both of them have pair....
