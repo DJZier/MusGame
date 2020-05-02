@@ -192,8 +192,10 @@ int Team::getValTotGame() {
 		}
 		else {
 			ValGame += 2;
+			cout << "ajouté " << ValGame << endl;
 		}
 	}
+	cout << "retourne : " << ValGame << endl;
 	return ValGame;
 }
 

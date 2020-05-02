@@ -66,26 +66,26 @@ Game::Game()
 void Game::dealCards(Deck& deck){
 	deck.shuffle(1000);
 	cout << "distribution des cartes..." << endl;
-	for (Player& player : listPlayer) {
+	/*for (Player& player : listPlayer) {
 		player.setHand(deck);
 		//player.getHand().showAllCards();
 		player.getHand().sortHand("high");
 		//player.getHand().showAllCards();
-	}
+	}*/
 
-	/*listPlayer[0].setHand(TEN, TEN, TEN, TEN);
+	listPlayer[0].setHand(TEN, FIVE, THREE, ACE);
 	listPlayer[0].getHand().showAllCards();
-	listPlayer[1].setHand(TEN, ACE, FIVE, TWO);
+	listPlayer[1].setHand(TEN, TEN, FIVE, TWO);
 	listPlayer[1].getHand().showAllCards();
 	listPlayer[2].setHand(TEN, ACE, FIVE, TWO);
 	listPlayer[2].getHand().showAllCards();
-	listPlayer[3].setHand(SEVEN, SEVEN, FIVE, TWO);
-	listPlayer[3].getHand().showAllCards();*/
+	listPlayer[3].setHand(SEVEN, SEVEN, FIVE, TEN);
+	listPlayer[3].getHand().showAllCards();
 		
-	team.pop_back();
+	/*team.pop_back();
 	team.pop_back();
 	team.push_back(Team(listPlayer[0], listPlayer[2]));
-	team.push_back(Team(listPlayer[1], listPlayer[3]));
+	team.push_back(Team(listPlayer[1], listPlayer[3]));*/
 	
 }
 //------------------------------------------------------------

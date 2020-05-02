@@ -16,9 +16,9 @@ int main() {
     while ((game.getScoreTeam(1) < 40) && (game.getScoreTeam(2) < 40)) {
         deck = *(new Deck());
         game.dealCards(deck);
-        /*int highPot;
+        int highPot;
         string highWin;
-        cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
+        /*cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
         highPot = game.betTime();
         if (game.compareHand("high") == game.getTeam(1)) {
             highWin = "Team 1 won the High lap";
@@ -97,11 +97,11 @@ int main() {
             }
         }    
         else if (gamePot == -1) {
-            gamePot += game.getValTotGame(1);
+            gamePot = game.getValTotGame(1);
             game.addPoints(1, gamePot);
         }
         else if (gamePot == -2) {
-            gamePot += game.getValTotGame(2);
+            gamePot = game.getValTotGame(2);
             game.addPoints(2, gamePot);
         }
                           
@@ -120,5 +120,6 @@ int main() {
             cout << "I don't understand please type y for yes and n for no"<< endl;
         
     }
+        return 0;
 }
 //-----------------------------
