@@ -51,14 +51,14 @@ void Player::clearHand() {
 	hand.clear();
 }
 //-------------------------------------------------------------------------------------
-bool Player::operator==(const Player& right) const {
+bool Player::operator==(const Player& right) const { // two players are equal if they have the same name, hand and status (here only the name would have been enough
 	if ((name == right.getName()) && (dealer == right.isDealer()) && (hand == right.getHand()))
 		return true;
 	else
 		return false;
 }
 //-------------------------------------------------------------------------------------
-bool Player::operator!=(const Player& right) const {
+bool Player::operator!=(const Player& right) const {//if two players have different name are not equal
 	if (name != right.getName())
 		return true;
 	else
@@ -70,7 +70,7 @@ bool Player::haspair() {
 }
 //---------------------------------------------------------------------------------------------------
 bool Player::hasGame() {
-	if (hand.sumHand() > 30)
+	if (hand.sumHand() > 30)//if aplayer has more than 30 he has the game
 		return true;
 	return false;
 }
