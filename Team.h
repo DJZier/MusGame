@@ -173,7 +173,7 @@ int Team::getValTotPair() {
 }
 
 //----------------------------------------------------------------------------------------------
-int Team::getValTotGame() {
+int Team::getValTotGame(){
 	int ValGame = 0;
 	if (P1.hasGame()) {
 		if (P1.getHand().sumHand() == 31) {
@@ -191,7 +191,6 @@ int Team::getValTotGame() {
 			ValGame += 2;
 		}
 	}
-	cout << "retourne : " << ValGame << endl;
 	return ValGame;
 }
 

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <iomanip>
+#include <Windows.h>
+#include <cstdlib>
 #include "Deck.h"
 #include "Hand.h"
 #include "Player.h"
@@ -20,13 +22,27 @@ int main() {
         game.dealCards(deck);
         int highPot;
         string highWin;
+        system("cls");
         cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
+        Sleep(1000);
         highPot = game.betTime();
         if ((highPot > 99) && (highPot < 200)) {
             game.addPoints(2, highPot - 100);
+            highWin = "Team 2 won the high lap because Team 1 fold";
         }
         else if (highPot > 200) {
             game.addPoints(1, highPot - 200);
+            highWin = "Team 2 won the high lap because Team 1 fold";
+        }
+        else if (highPot == 0) {
+            if (game.compareHand("high") == game.getTeam(1)) {
+                highWin = "Team 1 won the High lap";
+                game.addPoints(1, 1);
+            }
+            else if (game.compareHand("high") == game.getTeam(2)) {
+                highWin = "Team 2 won the High lap";
+                game.addPoints(2, 1);
+            }
         }
         else if (game.compareHand("high") == game.getTeam(1)) {
             highWin = "Team 1 won the High lap";
@@ -36,18 +52,29 @@ int main() {
             highWin = "Team 2 won the High lap";
             game.addPoints(2,highPot);
         }
-        cout << highWin << endl;
-        game.showScore();     
-
-
+       
+        system("cls");
         cout << "--------------------------------------------------------begin of the Low lap--------------------------------------------------------" << endl;
+        Sleep(1000);
         int lowPot = game.betTime();
         string lowWin;
         if ((lowPot > 99) && (lowPot < 200)) {
             game.addPoints(2, lowPot - 100);
+            lowWin = "Team 2 won the low lap because Team 1 fold";
         }
         else if (lowPot > 200) {
             game.addPoints(1, lowPot - 200);
+            lowWin = "Team 1 won the low lap because Team 2 fold";
+        }
+        else if (lowPot == 0) {
+            if (game.compareHand("low") == game.getTeam(1)) {
+                lowWin = "Team 1 won the Low lap";
+                game.addPoints(1, 1);
+            }
+            else if (game.compareHand("low") == game.getTeam(2)) {
+                lowWin = "Team 2 won the Low lap";
+                game.addPoints(2, 1);
+            }
         }
         else if (game.compareHand("low") == game.getTeam(1)) {
             game.addPoints(1,lowPot);
@@ -57,9 +84,10 @@ int main() {
             game.addPoints(2,lowPot);
             lowWin = "Team 2 won the Low lap";
         }
-        cout << lowWin << endl;
-        game.showScore();
-        cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;        
+
+        system("cls");
+        cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;  
+        Sleep(1000);
         int pairPot = game.betPair();
         string pairWin;
         if ((pairPot >= 0)&&(pairPot<41)) {
@@ -76,21 +104,42 @@ int main() {
         }
         else if ((pairPot > 99) && (pairPot < 200)) {
             game.addPoints(2, pairPot - 100);
+            pairWin = "Team 2 won the pair lap because Team 1 has fold";
         }
         else if (pairPot > 200) {
             game.addPoints(1, pairPot - 200);
+            pairWin = "Team 1 won the pair lap because Team 2 has fold";
         }
         else if (pairPot == -100) {
             pairPot = game.getValTotPair(1);
             game.addPoints(1, pairPot);
+            pairWin = "Team 1 won the pair lap because ot's the only team with pair";
         }
         else if (pairPot == -200) {
             pairPot = game.getValTotPair(2);
             game.addPoints(2, pairPot);
+            pairWin = "Team 2 won the pair lap because ot's the only team with pair";
         }
-        cout << pairWin << endl;
-        game.showScore();
+        else if (pairPot == -300) {
+            pairWin = "Nobody has pair";
+        }
+        if (game.getScoreTeam(1) > 39) {
+            cout << "<<<<<<<<<<<<<<<<<END OF THE GAME>>>>>>>>>>>>>>>>>>" << endl;
+            game.showScore();
+            game.shutDown();
+            cout << "Team 1 Won !!!!!!!" << endl;
+            return 0;
+        }
+        else  if (game.getScoreTeam(2) > 39) {
+            cout << "<<<<<<<<<<<<<<<<<END OF THE GAME>>>>>>>>>>>>>>>>>>" << endl;
+            game.showScore();
+            game.shutDown();
+            cout << "Team 2 Won !!!!!!!" << endl;
+            return 0;
+        }
+        system("cls");
         cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
+        Sleep(1000);
         int gamePot = game.betGame();
         string gameWin;
         if ((gamePot > 0) && (gamePot<41)) {
@@ -108,9 +157,11 @@ int main() {
         }
         else if ((gamePot > 99) && (gamePot < 200)) {
             game.addPoints(2, gamePot-100);
+            gameWin = "Team 2 won the game lap because Team 1 has fold";
         }
         else if (gamePot > 200) {
             game.addPoints(1, gamePot - 200);
+            gameWin = "Team 1 won the game lap because Team 2 has fold";
         }
         else if (gamePot == 0) {
             if (game.teamHasGame(1) || game.teamHasGame(2)) {
@@ -139,27 +190,46 @@ int main() {
         else if (gamePot == -100) {
             gamePot = game.getValTotGame(1);
             game.addPoints(1, gamePot);
+            gameWin = "Team 1 won the game lap because it's the only team with game";
         }
         else if (gamePot == -200) {
             gamePot = game.getValTotGame(2);
             game.addPoints(2, gamePot);
+            gameWin = "Team 2 won the game lap because it's the only team with game";
         }
-                          
-        cout << gameWin << endl;
-        game.showScore();
         game.shutDown();
+        Sleep(500);
+        cout << highWin << endl;
+        Sleep(500);
+        cout << lowWin << endl;
+        Sleep(500);
+        cout << pairWin << endl;
+        Sleep(500);
+        cout << gameWin << endl;
+        Sleep(500);
+        game.showScore(); 
+        Sleep(2000);
         delete deckptr;
-        cout << "do you want to quit the game ? (y/n)" << endl;
+        cout << "Next hand ? (y/n)" << endl;
         string answer;
         cin >> answer;
-        if (answer == "y")
+        if (answer == "n")
             break;
-        else if (answer == "n")
+        else if (answer == "y")
             continue;
         else
             cout << "I don't understand please type y for yes and n for no"<< endl;
         
     }
-        return 0;
+    cout << "<<<<<<<<<<<<<<<<<END OF THE GAME>>>>>>>>>>>>>>>>>>" << endl;
+    game.showScore();
+    if (game.getScoreTeam(1) > 39) {
+        cout << "Team 1 Won !!!!!!!" << endl;
+    }
+    else if (game.getScoreTeam(2) > 39) {
+        cout << "Team 2 Won !!!!!!!" << endl;
+    }
+
+    return 0;
 }
 //-----------------------------
