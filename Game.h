@@ -286,7 +286,7 @@ int Game::betTime() {
 						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 						cout << "end bet time" << endl;
 						team[0].setBetBool(false);
-						return pot;
+						return pot+100;
 					}
 					else if (answer == "RAISE") {
 						cout << "How much do you want to raise ?" << endl;
@@ -367,7 +367,7 @@ int Game::betTime() {
 							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 							cout << "end bet time" << endl;
 							team[1].setBetBool(false);
-							return pot;
+							return pot+200;
 						}
 						else if (answer == "RAISE") {
 							cout << "How much do you want to raise ?" << endl;
@@ -798,11 +798,11 @@ int Game::betPair() {
 		if (!(team[0].hasPair() && team[1].hasPair())) {				// if only one team has pair it return -1
 			if (team[0].hasPair()) {
 				cout << "only Team 1 has pair" << endl;
-				return -1;
+				return -100;
 			}
 			if (team[1].hasPair()) {
 				cout << "only Team 2 has pair" << endl;
-				return -2;
+				return -200;
 			}				
 		}
 		cout << "both teams have pairs let's bet.." << endl;		// if both of them have pair....
@@ -859,7 +859,7 @@ int Game::betPair() {
 								cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 								cout << "end bet time" << endl;
 								team[0].setBetBool(false);
-								return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+								return pot+100; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
 							}
 							else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
 								cout << "How much do you want to raise ?" << endl;
@@ -940,7 +940,7 @@ int Game::betPair() {
 								cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 								cout << "end bet time" << endl;
 								team[1].setBetBool(false);
-								return pot;
+								return pot+200;
 							}
 							else if (answer == "RAISE") {
 								cout << "How much do you want to raise ?" << endl;
@@ -1026,11 +1026,11 @@ int Game::betGame() {
 		if (!(team[0].hasGame() && team[1].hasGame())) {				// if only one team has pair it return -1
 			if (team[0].hasGame()) {
 				cout << "only Team 1 has Game" << endl;
-				return -1;
+				return -100;
 			}
 			if (team[1].hasGame()) {
 				cout << "only Team 2 has Game" << endl;
-				return -2;
+				return -200;
 			}
 		}
 		cout << "both teams have Games let's bet.." << endl;		// if both of them have pair....
@@ -1088,7 +1088,7 @@ int Game::betGame() {
 							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 							cout << "end bet time" << endl;
 							team[0].setBetBool(false);
-							return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+							return pot+100; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
 						}
 						else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
 							cout << "How much do you want to raise ?" << endl;
@@ -1169,7 +1169,7 @@ int Game::betGame() {
 							cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 							cout << "end bet time" << endl;
 							team[1].setBetBool(false);
-							return pot;
+							return pot+200;
 						}
 						else if (answer == "RAISE") {
 							cout << "How much do you want to raise ?" << endl;
@@ -1284,7 +1284,7 @@ int Game::betGame() {
 						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 						cout << "end bet time" << endl;
 						team[0].setBetBool(false);
-						return pot; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
+						return pot+100; // ATTENTION IL FAUDRA PEUT ETRE CREER UNE CLASSE POT POUR POUVOIR RETOURNER LEQUIPE GAGNANTE, ICI FOLD FAIT PAS PERDRE LEQUIPE
 					}
 					else if (answer == "RAISE") {//<-------------------------------------------------------------------------------------- if player want to raise, we ask how much, store the value in variable, add this value to the pot, and go to the next player and we say "now the team1 has bet and not the team2"
 						cout << "How much do you want to raise ?" << endl;
@@ -1365,7 +1365,7 @@ int Game::betGame() {
 						cout << listPlayer[indiceActualPlayer].getName() << " is fold" << endl;
 						cout << "end bet time" << endl;
 						team[1].setBetBool(false);
-						return pot;
+						return pot+200;
 					}
 					else if (answer == "RAISE") {
 						cout << "How much do you want to raise ?" << endl;

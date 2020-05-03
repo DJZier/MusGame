@@ -22,7 +22,13 @@ int main() {
         string highWin;
         cout << "--------------------------------------------------------begin of the High lap--------------------------------------------------------" << endl;
         highPot = game.betTime();
-        if (game.compareHand("high") == game.getTeam(1)) {
+        if ((highPot > 99) && (highPot < 200)) {
+            game.addPoints(2, highPot - 100);
+        }
+        else if (highPot > 200) {
+            game.addPoints(1, highPot - 200);
+        }
+        else if (game.compareHand("high") == game.getTeam(1)) {
             highWin = "Team 1 won the High lap";
             game.addPoints(1,highPot);
         }
@@ -37,7 +43,13 @@ int main() {
         cout << "--------------------------------------------------------begin of the Low lap--------------------------------------------------------" << endl;
         int lowPot = game.betTime();
         string lowWin;
-        if (game.compareHand("low") == game.getTeam(1)) {
+        if ((lowPot > 99) && (lowPot < 200)) {
+            game.addPoints(2, lowPot - 100);
+        }
+        else if (lowPot > 200) {
+            game.addPoints(1, lowPot - 200);
+        }
+        else if (game.compareHand("low") == game.getTeam(1)) {
             game.addPoints(1,lowPot);
             lowWin = "Team 1 won the Low lap";
         }
@@ -50,7 +62,7 @@ int main() {
         cout << "--------------------------------------------------------begin of the Pair lap--------------------------------------------------------" << endl;        
         int pairPot = game.betPair();
         string pairWin;
-        if (pairPot >= 0) {
+        if ((pairPot >= 0)&&(pairPot<41)) {
             if (game.compareHand("pair") == game.getTeam(1)) {
                 pairPot += game.getValTotPair(1);
                 game.addPoints(1,pairPot);
@@ -62,11 +74,17 @@ int main() {
                 pairWin = "Team 2 won the Pair lap";
             }
         }
-        else if (pairPot == -1) {
+        else if ((pairPot > 99) && (pairPot < 200)) {
+            game.addPoints(2, pairPot - 100);
+        }
+        else if (pairPot > 200) {
+            game.addPoints(1, pairPot - 200);
+        }
+        else if (pairPot == -100) {
             pairPot = game.getValTotPair(1);
             game.addPoints(1, pairPot);
         }
-        else if (pairPot == -2) {
+        else if (pairPot == -200) {
             pairPot = game.getValTotPair(2);
             game.addPoints(2, pairPot);
         }
@@ -75,7 +93,7 @@ int main() {
         cout << "--------------------------------------------------------begin of the Game lap--------------------------------------------------------" << endl;
         int gamePot = game.betGame();
         string gameWin;
-        if (gamePot > 0) {
+        if ((gamePot > 0) && (gamePot<41)) {
             if (game.compareHand("game") == game.getTeam(1)) {
                 gamePot += game.getValTotGame(1);
                 cout << gamePot << endl;
@@ -87,6 +105,12 @@ int main() {
                 game.addPoints(2, gamePot);
                 gameWin = "Team 2 won the Game lap";
             }
+        }
+        else if ((gamePot > 99) && (gamePot < 200)) {
+            game.addPoints(2, gamePot-100);
+        }
+        else if (gamePot > 200) {
+            game.addPoints(1, gamePot - 200);
         }
         else if (gamePot == 0) {
             if (game.teamHasGame(1) || game.teamHasGame(2)) {
@@ -112,11 +136,11 @@ int main() {
                 }
             }           
         }    
-        else if (gamePot == -1) {
+        else if (gamePot == -100) {
             gamePot = game.getValTotGame(1);
             game.addPoints(1, gamePot);
         }
-        else if (gamePot == -2) {
+        else if (gamePot == -200) {
             gamePot = game.getValTotGame(2);
             game.addPoints(2, gamePot);
         }
