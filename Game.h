@@ -119,19 +119,19 @@ Game::Game()
 //------------------------------------------------------------
 void Game::dealCards(Deck& deck){
 	deck.shuffle(1000);
-	for (Player& player : listPlayer) { //we initialize the hand of all the players and sort in desnecdant order
+	/*for (Player& player : listPlayer) { //we initialize the hand of all the players and sort in desnecdant order
 		player.setHand(deck);
 		player.getHand().sortHand("high");
-	}
+	}*/
 
-	/*listPlayer[0].setHand(TEN, TEN, TEN, ACE);
+	listPlayer[0].setHand(TEN, TEN, TEN, ACE);
 	listPlayer[0].getHand().showAllCards();
 	listPlayer[1].setHand(TEN, TEN, TEN, TEN);
 	listPlayer[1].getHand().showAllCards();          //here if you uncomment this and comment the "for" above 
 	listPlayer[2].setHand(TEN, ACE, FIVE, TWO);      //you can set the hand of the players as you want (handy to test particular cases)
 	listPlayer[2].getHand().showAllCards();
 	listPlayer[3].setHand(SEVEN, SEVEN, FIVE, TEN);
-	listPlayer[3].getHand().showAllCards();*/
+	listPlayer[3].getHand().showAllCards();
 		
 
 	
